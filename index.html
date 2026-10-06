@@ -391,7 +391,7 @@ const SEASONS=[
 {id:'hojlund-26',name:'HØJLUND',fullName:'Rasmus Højlund',number:9,position:'FWD',nationality:'Denmark',birthDate:'4 February 2003',height:'191 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'},
 {id:'mount-26',name:'MOUNT',fullName:'Mason Mount',number:7,position:'MID',nationality:'England',birthDate:'10 January 1999',height:'178 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'}]}];
 
-const ЛЕГЕНДЫ=[
+const LEGENDS=[
 {id:'best',name:'BEST',fullName:'George Best',number:7,position:'FWD',nationality:'Northern Ireland',birthDate:'22 May 1946',height:'175 cm',appearances:470,goals:179,assists:'—',trophies:'Кубок европейских чемпионов 1968 · Ballon d’Or 1968',kit:'home'},
 {id:'charlton',name:'CHARLTON',fullName:'Sir Bobby Charlton',number:9,position:'MID',nationality:'England',birthDate:'11 October 1937',height:'173 cm',appearances:758,goals:249,assists:'—',trophies:'Кубок европейских чемпионов 1968 · Ballon d’Or 1966',kit:'home'},
 {id:'cantona',name:'CANTONA',fullName:'Eric Cantona',number:7,position:'FWD',nationality:'France',birthDate:'24 May 1966',height:'188 cm',appearances:185,goals:82,assists:'—',trophies:'4× PL, 2× Кубок Англии',kit:'home'},
@@ -406,9 +406,9 @@ const ЛЕГЕНДЫ=[
 {id:'schmeichel',name:'SCHMEICHEL',fullName:'Peter Schmeichel',number:1,position:'GK',nationality:'Denmark',birthDate:'18 November 1963',height:'191 cm',appearances:398,goals:1,assists:'—',trophies:'5× PL, UCL 1999, Treble',kit:'home'},
 {id:'vds',name:'VAN DER SAR',fullName:'Edwin van der Sar',number:1,position:'GK',nationality:'Netherlands',birthDate:'29 October 1970',height:'197 cm',appearances:266,goals:0,assists:0,trophies:'4× PL, UCL 2008',kit:'home'}];
 
-const ТРОФЕИ=[
+const TROPHIES=[
 {id:'pl',name:'Premier League',wikiTitle:'Premier League trophy',count:13,last:'2012/13',description:'Record English top-flight title haul. The cornerstone of the Ferguson era.'},
-{id:'ucl',name:'UEFA Champions League',wikiTitle:'European Champion Clubs' Cup',count:3,last:'2007/08',description:'1968, 1999, 2008. Moscow rain, Camp Nou miracle, Wembley glory.'},
+{id:'ucl',name:'UEFA Champions League',wikiTitle:"European Champion Clubs' Cup",count:3,last:'2007/08',description:'1968, 1999, 2008. Moscow rain, Camp Nou miracle, Wembley glory.'},
 {id:'facup',name:'Кубок Англии',wikiTitle:'Кубок Англии',count:13,last:'2023/24',description:'The oldest domestic cup competition in world football.'},
 {id:'efl',name:'EFL / League Cup',wikiTitle:'EFL Cup',count:6,last:'2022/23',description:'Six League Cup triumphs, including the 2023 win under Ten Hag.'},
 {id:'uel',name:'UEFA Europa League',wikiTitle:'UEFA Europa League',count:1,last:'2016/17',description:'Won in Stockholm under José Mourinho.'},
@@ -568,7 +568,7 @@ return(<div className="locker">
 <div className="locker-head"><div><div className="mono-label">HALL OF FAME</div><h2 className="display locker-title">ЛЕГЕНДЫ</h2><div className="mono-label locker-head-sub">ВЕЧНЫЕ КРАСНЫЕ ДЬЯВОЛЫ</div></div></div>
 <div className="locker-rail-wrap">
 <div className="rail-metal"><div className="rail-line"/><div className="rail-line-back"/></div>
-<div className="rail-track"><AnimatePresence mode="popLayout">{ЛЕГЕНДЫ.map((p,i)=>(<Shirt key={p.id} player={p} index={i} selected={selectedId===p.id} dimmed={!!selectedId&&selectedId!==p.id&&hoveredId!==p.id} onHover={(v)=>{if(v)onHoverSound();setHoveredId(v?p.id:null);}} onSelect={()=>{onClickSound();setSelectedId(p.id);}}/>))}</AnimatePresence></div>
+<div className="rail-track"><AnimatePresence mode="popLayout">{LEGENDS.map((p,i)=>(<Shirt key={p.id} player={p} index={i} selected={selectedId===p.id} dimmed={!!selectedId&&selectedId!==p.id&&hoveredId!==p.id} onHover={(v)=>{if(v)onHoverSound();setHoveredId(v?p.id:null);}} onSelect={()=>{onClickSound();setSelectedId(p.id);}}/>))}</AnimatePresence></div>
 </div>
 <PlayerCard player={selected} seasonLabel="ЛЕГЕНДЫ" onClose={()=>setSelectedId(null)}/>
 </div>);}
@@ -598,7 +598,7 @@ return(<div className="matchday">
 /* ============ ЗАЛ ТРОФЕЕВ ============ */
 function TrophyRoom(){const[openId,setOpenId]=useState(null);return(<div className="trophy">
 <div className="locker-head"><div><div className="mono-label">ЗАЛ ТРОФЕЕВ</div><h2 className="display locker-title">КЛУБНЫЕ ТИТУЛЫ</h2><div className="mono-label locker-head-sub">ОСНОВАН · 1878 · МАНЧЕСТЕР UNITED</div></div></div>
-<div className="trophy-grid">{ТРОФЕИ.map((t,i)=>(<motion.button key={t.id} className="trophy-card" initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{duration:.5,delay:i*.05,ease:[.22,1,.36,1]}} whileHover={{y:-8}} onClick={()=>setOpenId(t.id===openId?null:t.id)}>
+<div className="trophy-grid">{TROPHIES.map((t,i)=>(<motion.button key={t.id} className="trophy-card" initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{duration:.5,delay:i*.05,ease:[.22,1,.36,1]}} whileHover={{y:-8}} onClick={()=>setOpenId(t.id===openId?null:t.id)}>
 <TrophyVisual t={t}/><div className="trophy-count display">{t.count}</div><div className="trophy-name">{t.name}</div><div className="mono-label" style={{marginTop:8}}>ПОСЛЕДНИЙ · {t.last}</div>
 <AnimatePresence>{openId===t.id&&<motion.div className="trophy-info" initial={{opacity:0,height:0}} animate={{opacity:1,height:'auto'}} exit={{opacity:0,height:0}} transition={{duration:.35,ease:[.22,1,.36,1]}}><div className="hair" style={{margin:'12px 0'}}/><p>{t.description}</p></motion.div>}</AnimatePresence>
 </motion.button>))}</div>
@@ -669,6 +669,9 @@ createRoot(document.getElementById('root')).render(<React.StrictMode><App/></Rea
 requestAnimationFrame(()=>{const f=document.getElementById('boot-fallback');if(f){f.style.opacity='0';setTimeout(()=>f.remove(),600);}});
 window.__MU_BOOT_OK__=true;
 </script>
-<script>setTimeout(()=>{if(!window.__MU_BOOT_OK__){const f=document.getElementById('boot-fallback');if(f){f.innerHTML='ОБНОВИ СТРАНИЦУ · НЕ УДАЛОСЬ ЗАПУСТИТЬ JAVASCRIPT';f.style.opacity='1';}}},7000);</script>
+<script>
+window.addEventListener('error',function(e){var f=document.getElementById('boot-fallback');if(f&&!window.__MU_BOOT_OK__){f.innerHTML='ОШИБКА ЗАПУСКА · ОБНОВИ СТРАНИЦУ';f.style.opacity='1';}});
+setTimeout(()=>{if(!window.__MU_BOOT_OK__){const f=document.getElementById('boot-fallback');if(f){f.innerHTML='ОБНОВИ СТРАНИЦУ · НЕ УДАЛОСЬ ЗАПУСТИТЬ JAVASCRIPT';f.style.opacity='1';}}},7000);
+</script>
 </body>
 </html>
