@@ -1,0 +1,1602 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<meta name="theme-color" content="#0a0a0a" />
+<title>Manchester United — Digital Locker Room</title>
+
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+<style>
+  :root {
+    --mu-red: #da291c;
+    --mu-red-dark: #8b1a10;
+    --mu-black: #000000;
+    --mu-white: #ffffff;
+    --bg-0: #050505;
+    --bg-1: #0a0a0a;
+    --bg-2: #111111;
+    --bg-3: #1a1a1a;
+    --border-0: rgba(255, 255, 255, 0.06);
+    --border-1: rgba(255, 255, 255, 0.12);
+    --border-red: rgba(218, 41, 28, 0.5);
+    --text-0: #ffffff;
+    --text-1: rgba(255, 255, 255, 0.7);
+    --text-2: rgba(255, 255, 255, 0.45);
+    --text-3: rgba(255, 255, 255, 0.25);
+    --font-display: 'Bebas Neue', 'Arial Narrow', sans-serif;
+    --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+    --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html, body, #root {
+    width: 100%;
+    min-height: 100%;
+    background: var(--bg-0);
+    color: var(--text-0);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    overscroll-behavior: none;
+  }
+  body { min-height: 100vh; min-height: 100dvh; }
+
+  button { font-family: inherit; color: inherit; background: none; border: none; cursor: pointer; }
+
+  ::-webkit-scrollbar { height: 4px; width: 4px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.15); border-radius: 2px; }
+  ::-webkit-scrollbar-thumb:hover { background: var(--mu-red); }
+
+  .grain::before {
+    content: '';
+    position: fixed;
+    inset: -50%;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+    opacity: 0.045;
+    pointer-events: none;
+    z-index: 9999;
+    animation: grainShift 8s steps(10) infinite;
+  }
+  @keyframes grainShift {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -5%); }
+    30% { transform: translate(3%, -3%); }
+    50% { transform: translate(-2%, 4%); }
+    70% { transform: translate(4%, 2%); }
+    90% { transform: translate(-3%, -2%); }
+  }
+
+  .display { font-family: var(--font-display); letter-spacing: 0.02em; line-height: 0.9; }
+  .mono-label {
+    font-family: var(--font-body);
+    font-size: 10px;
+    font-weight: 500;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--text-2);
+  }
+  .hair {
+    height: 1px;
+    width: 100%;
+    background: linear-gradient(90deg, transparent, var(--border-1), transparent);
+  }
+
+  .app { position: relative; min-height: 100vh; background: var(--bg-0); overflow-x: hidden; }
+
+  /* ---- INTRO ---- */
+  .intro {
+    position: fixed; inset: 0; z-index: 9998;
+    background: #000;
+    display: grid; place-items: center;
+    overflow: hidden;
+  }
+  .intro-vignette {
+    position: absolute; inset: 0;
+    background: radial-gradient(ellipse at center, rgba(218,41,28,0.14), transparent 60%);
+    pointer-events: none;
+  }
+  .intro-content { position: relative; text-align: center; padding: 0 24px; }
+  .intro-title {
+    font-family: var(--font-display);
+    font-size: clamp(38px, 8vw, 96px);
+    letter-spacing: 0.06em;
+    color: #fff;
+    text-shadow: 0 0 80px rgba(218,41,28,0.5);
+  }
+
+  /* ---- NAV ---- */
+  .nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 16px 28px;
+    background: linear-gradient(180deg, rgba(5,5,5,0.92), rgba(5,5,5,0.4) 70%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1px solid var(--border-0);
+  }
+  .nav-left { display: flex; align-items: center; gap: 14px; }
+  .crest {
+    width: 40px; height: 40px;
+    display: grid; place-items: center;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--mu-red), var(--mu-red-dark));
+    box-shadow: 0 0 24px rgba(218,41,28,0.45), inset 0 0 0 1px rgba(255,255,255,0.08);
+  }
+  .crest-inner { font-family: var(--font-display); font-size: 20px; color: #fff; letter-spacing: 0.04em; }
+  .nav-club-name { font-size: 16px; letter-spacing: 0.14em; }
+  .nav-center { display: flex; gap: 32px; }
+  .nav-link { position: relative; padding: 8px 2px; color: var(--text-2); transition: color 0.25s var(--ease-out); }
+  .nav-link:hover { color: var(--text-0); }
+  .nav-link.active { color: var(--mu-white); }
+  .nav-underline {
+    position: absolute; left: 0; right: 0; bottom: -2px;
+    height: 1px; background: var(--mu-red);
+    box-shadow: 0 0 12px var(--mu-red);
+  }
+  .nav-right { display: flex; align-items: center; gap: 16px; }
+  .sound-btn {
+    color: var(--text-2);
+    padding: 8px 14px;
+    border: 1px solid var(--border-1);
+    border-radius: 999px;
+    transition: all 0.25s var(--ease-out);
+  }
+  .sound-btn:hover { color: #fff; border-color: var(--border-red); }
+  .burger { width: 40px; height: 40px; display: grid; place-items: center; }
+  .burger-line { display: block; width: 20px; height: 1px; background: #fff; position: relative; }
+  .burger-line::before, .burger-line::after {
+    content: ''; position: absolute; left: 0; width: 20px; height: 1px;
+    background: #fff; transition: transform 0.3s var(--ease-out);
+  }
+  .burger-line::before { top: -6px; }
+  .burger-line::after { top: 6px; }
+  .mobile-menu {
+    position: fixed; top: 73px; left: 0; right: 0; z-index: 99;
+    background: rgba(10,10,10,0.96);
+    backdrop-filter: blur(20px);
+    padding: 24px; display: flex; flex-direction: column; gap: 8px;
+    border-bottom: 1px solid var(--border-1);
+  }
+  .mobile-nav-link {
+    font-size: 28px; letter-spacing: 0.05em;
+    color: var(--text-2); padding: 12px 4px;
+    text-align: left; border-bottom: 1px solid var(--border-0);
+  }
+  .mobile-nav-link.active { color: var(--mu-red); }
+  .desktop-only { display: flex; }
+  .mobile-only { display: none; }
+
+  /* ---- SEASON ---- */
+  .season-bar {
+    position: relative;
+    display: flex; align-items: center; gap: 20px;
+    padding: 12px 28px;
+    border-top: 1px solid var(--border-0);
+    border-bottom: 1px solid var(--border-0);
+    background: linear-gradient(180deg, rgba(0,0,0,0.35), rgba(0,0,0,0.15));
+    backdrop-filter: blur(6px);
+  }
+  .season-label { flex-shrink: 0; color: var(--text-2); }
+  .season-track { display: flex; gap: 6px; overflow-x: auto; scrollbar-width: none; scroll-snap-type: x proximity; }
+  .season-track::-webkit-scrollbar { display: none; }
+  .season-chip {
+    flex-shrink: 0;
+    padding: 8px 16px;
+    font-size: 15px; letter-spacing: 0.08em;
+    color: var(--text-2);
+    border: 1px solid transparent;
+    border-radius: 999px;
+    transition: all 0.3s var(--ease-out);
+    scroll-snap-align: center;
+  }
+  .season-chip:hover { color: var(--text-0); border-color: var(--border-1); }
+  .season-chip.active {
+    color: #fff;
+    background: linear-gradient(180deg, rgba(218,41,28,0.18), rgba(218,41,28,0.05));
+    border-color: var(--mu-red);
+    box-shadow: 0 0 20px rgba(218,41,28,0.3), inset 0 0 12px rgba(218,41,28,0.15);
+  }
+
+  /* ---- FILTER ---- */
+  .filter {
+    display: flex; align-items: center; gap: 16px;
+    padding: 10px 28px;
+    border-bottom: 1px solid var(--border-0);
+    background: rgba(0,0,0,0.25);
+    backdrop-filter: blur(6px);
+  }
+  .filter-label { color: var(--text-2); flex-shrink: 0; }
+  .filter-track { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; }
+  .filter-track::-webkit-scrollbar { display: none; }
+  .filter-chip {
+    flex-shrink: 0;
+    padding: 6px 14px;
+    font-family: var(--font-body);
+    font-size: 11px; font-weight: 600; letter-spacing: 0.2em;
+    color: var(--text-2);
+    border: 1px solid transparent;
+    border-radius: 4px;
+    transition: all 0.25s var(--ease-out);
+  }
+  .filter-chip:hover { color: var(--text-0); }
+  .filter-chip.active { color: #fff; background: rgba(255,255,255,0.04); border-color: var(--border-1); }
+  .filter-chip.active::before {
+    content: '';
+    display: inline-block; width: 5px; height: 5px;
+    background: var(--mu-red);
+    border-radius: 999px;
+    margin-right: 8px;
+    box-shadow: 0 0 8px var(--mu-red);
+    vertical-align: middle;
+  }
+
+  /* ---- LOCKER ROOM ---- */
+  .locker { position: relative; min-height: 100vh; min-height: 100dvh; padding-top: 76px; overflow-x: hidden; }
+  .locker-bg {
+    position: fixed; inset: -40px; z-index: 0;
+    transition: transform 0.6s var(--ease-out);
+    will-change: transform; pointer-events: none;
+  }
+  .locker-bg-lights {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(60% 40% at 20% 0%, rgba(218,41,28,0.22), transparent 60%),
+      radial-gradient(50% 40% at 85% 10%, rgba(255,255,255,0.06), transparent 60%),
+      radial-gradient(70% 60% at 50% 110%, rgba(218,41,28,0.12), transparent 60%),
+      linear-gradient(180deg, #0a0a0a 0%, #050505 60%, #000 100%);
+  }
+  .locker-bg-panels {
+    position: absolute; inset: 0;
+    background-image:
+      linear-gradient(180deg, rgba(255,255,255,0.025), transparent 40%),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.028) 0 1px, transparent 1px 120px),
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.4) 0 1px, transparent 1px 80px);
+    opacity: 0.75;
+    mask-image: radial-gradient(ellipse at center, #000 40%, transparent 90%);
+    -webkit-mask-image: radial-gradient(ellipse at center, #000 40%, transparent 90%);
+  }
+  .locker-bg-dust {
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, rgba(255,255,255,0.25), transparent 60%),
+      radial-gradient(1px 1px at 70% 60%, rgba(255,255,255,0.18), transparent 60%),
+      radial-gradient(1px 1px at 40% 80%, rgba(255,255,255,0.16), transparent 60%),
+      radial-gradient(1px 1px at 85% 25%, rgba(255,255,255,0.14), transparent 60%);
+    opacity: 0.35;
+    animation: dustDrift 30s linear infinite;
+  }
+  @keyframes dustDrift {
+    from { background-position: 0 0, 0 0, 0 0, 0 0; }
+    to   { background-position: 40px -60px, -30px 40px, 20px 80px, -50px -20px; }
+  }
+
+  .locker-head {
+    position: relative; z-index: 2;
+    display: flex; align-items: flex-end; justify-content: space-between;
+    padding: 36px 40px 18px; gap: 24px;
+  }
+  .locker-title {
+    font-size: clamp(36px, 6vw, 72px);
+    letter-spacing: 0.02em;
+    color: #fff;
+    margin: 6px 0 8px;
+    text-shadow: 0 4px 40px rgba(0,0,0,0.8);
+  }
+  .locker-head-sub { color: var(--text-2); }
+  .locker-head-right { color: var(--text-2); display: flex; align-items: center; gap: 8px; }
+  .live-dot {
+    width: 6px; height: 6px; border-radius: 999px;
+    background: var(--mu-red);
+    box-shadow: 0 0 12px var(--mu-red);
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+
+  .locker-rail-wrap { position: relative; z-index: 2; margin-top: 44px; padding-bottom: 120px; }
+  .rail-metal { position: absolute; left: 0; right: 0; top: 22px; height: 6px; z-index: 1; }
+  .rail-line {
+    position: absolute; left: 0; right: 0; top: 0; height: 3px;
+    background: linear-gradient(180deg, #cfcfd4, #5a5a60 60%, #2c2c30);
+    box-shadow: 0 2px 10px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.5);
+  }
+  .rail-line-back {
+    position: absolute; left: 0; right: 0; top: 8px; height: 2px;
+    background: linear-gradient(180deg, rgba(255,255,255,0.15), transparent);
+  }
+  .rail-track {
+    position: relative; z-index: 2;
+    display: flex; gap: 8px;
+    padding: 0 40px;
+    overflow-x: auto; overflow-y: visible;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    scroll-padding: 40px;
+  }
+  .rail-track::-webkit-scrollbar { display: none; }
+
+  .locker-foot {
+    position: relative; z-index: 2;
+    display: flex; align-items: center; gap: 14px;
+    padding: 22px 40px 40px;
+    color: var(--text-3);
+    border-top: 1px solid var(--border-0);
+    margin-top: 20px;
+  }
+  .locker-foot-sep { width: 4px; height: 4px; border-radius: 999px; background: var(--mu-red); opacity: 0.6; }
+
+  /* ---- SHIRT ---- */
+  .shirt-wrap {
+    position: relative; flex-shrink: 0;
+    width: 168px;
+    padding: 16px 8px 0;
+    cursor: pointer;
+    perspective: 1000px;
+    will-change: transform, opacity;
+  }
+  .shirt-stage {
+    position: relative;
+    width: 100%; height: 240px;
+    display: flex; flex-direction: column; align-items: center;
+    transform-style: preserve-3d;
+  }
+  .hangar {
+    position: relative;
+    width: 100%; height: 46px;
+    display: flex; flex-direction: column; align-items: center;
+    z-index: 3;
+    pointer-events: none;
+  }
+  .hangar-hook {
+    width: 22px; height: 22px;
+    border: 2px solid rgba(200,200,205,0.8);
+    border-radius: 50%;
+    border-bottom-color: transparent;
+    transform: rotate(-10deg);
+    box-shadow: inset 0 0 6px rgba(255,255,255,0.15);
+  }
+  .hangar-bar {
+    width: 90px; height: 3px;
+    background: linear-gradient(180deg, #d7d7db, #6c6c72);
+    border-radius: 2px;
+    margin-top: -8px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.6);
+  }
+  .hangar-neck {
+    width: 3px; height: 14px;
+    background: linear-gradient(180deg, #b5b5b8, #55555a);
+  }
+
+  .shirt {
+    position: relative;
+    width: 130px; height: 160px;
+    margin-top: -4px;
+    border-radius: 8px 8px 6px 6px;
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(255,255,255,0.08), transparent 60%),
+      linear-gradient(180deg, var(--mu-red), #9a1a11 85%, #6f120b);
+    box-shadow:
+      inset 0 -12px 24px rgba(0,0,0,0.45),
+      inset 0 2px 0 rgba(255,255,255,0.1),
+      0 12px 28px rgba(0,0,0,0.6);
+    overflow: hidden;
+    transition: filter 0.4s var(--ease-out), transform 0.4s var(--ease-out);
+  }
+  .shirt.away {
+    background:
+      radial-gradient(120% 80% at 50% 0%, rgba(255,255,255,0.15), transparent 60%),
+      linear-gradient(180deg, #f7f7f7, #d8d8d8 85%, #b5b5b5);
+    color: #111;
+  }
+  .shirt.away .shirt-num, .shirt.away .shirt-name { color: #111; text-shadow: 0 1px 0 rgba(255,255,255,0.6); }
+  .shirt::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg, rgba(0,0,0,0.06) 0 1px, transparent 1px 3px),
+      repeating-linear-gradient(-45deg, rgba(255,255,255,0.04) 0 1px, transparent 1px 4px);
+    pointer-events: none; mix-blend-mode: overlay; opacity: 0.6;
+  }
+  .shirt::after {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0; height: 60%;
+    background: linear-gradient(180deg, rgba(255,255,255,0.14), transparent 70%);
+    pointer-events: none;
+  }
+  .shirt.selected {
+    filter: brightness(1.12) saturate(1.06);
+    box-shadow:
+      inset 0 -12px 24px rgba(0,0,0,0.5),
+      0 24px 48px rgba(218,41,28,0.35),
+      0 0 60px rgba(218,41,28,0.35);
+  }
+  .shirt-body {
+    position: absolute; inset: 0;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    padding-top: 22px;
+    z-index: 2;
+  }
+  .shirt-num {
+    font-size: 54px; color: #fff; line-height: 0.85;
+    text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    letter-spacing: 0.02em;
+  }
+  .shirt-name {
+    font-size: 17px; letter-spacing: 0.14em; color: #fff;
+    margin-top: 4px; text-shadow: 0 2px 6px rgba(0,0,0,0.5);
+    max-width: 116px; text-align: center;
+    white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  }
+  .shirt-shoulder {
+    position: absolute; top: -2px; left: -14px; right: -14px; height: 30px;
+    background: linear-gradient(180deg, #b71f13, #8b1a10);
+    border-radius: 50% 50% 12px 12px / 60% 60% 20% 20%;
+    z-index: 1;
+  }
+  .shirt-sleeve {
+    position: absolute; top: 12px;
+    width: 26px; height: 70px;
+    background: linear-gradient(180deg, #a81d12, #741008);
+    border-radius: 8px; z-index: 0;
+    box-shadow: inset 0 -8px 16px rgba(0,0,0,0.4);
+  }
+  .shirt-sleeve.left { left: -22px; transform: rotate(6deg); }
+  .shirt-sleeve.right { right: -22px; transform: rotate(-6deg); }
+  .shirt-shadow {
+    position: absolute; bottom: -2px; left: 50%; transform: translateX(-50%);
+    width: 130px; height: 12px;
+    background: radial-gradient(closest-side, rgba(0,0,0,0.65), transparent);
+    filter: blur(4px);
+    transition: all 0.4s var(--ease-out);
+    z-index: -1;
+  }
+  .shirt-shadow.strong {
+    bottom: -22px; width: 170px; height: 20px;
+    background: radial-gradient(closest-side, rgba(218,41,28,0.5), transparent);
+    filter: blur(8px);
+  }
+  .shirt-glow {
+    position: absolute; inset: -20px;
+    background: radial-gradient(closest-side, rgba(218,41,28,0.4), transparent 70%);
+    opacity: 0; transition: opacity 0.4s var(--ease-out);
+    pointer-events: none; z-index: -1;
+  }
+  .shirt-glow.on { opacity: 1; }
+  .shirt-tag { text-align: center; margin-top: 14px; color: var(--text-3); }
+
+  /* ---- PLAYER CARD ---- */
+  .pcard { position: fixed; top: 96px; right: 24px; bottom: 24px; width: 380px; z-index: 90; overflow: hidden; }
+  .pcard-inner {
+    height: 100%; overflow-y: auto;
+    padding: 24px 22px 20px;
+    border-radius: 14px;
+    background: linear-gradient(180deg, rgba(20,20,20,0.78), rgba(10,10,10,0.85));
+    border: 1px solid var(--border-1);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7), inset 0 1px 0 rgba(255,255,255,0.06);
+    position: relative;
+  }
+  .pcard-inner::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, transparent, var(--mu-red), transparent);
+    opacity: 0.7;
+  }
+  .pcard-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px; }
+  .pcard-close {
+    width: 28px; height: 28px;
+    display: grid; place-items: center;
+    border: 1px solid var(--border-1); border-radius: 6px;
+    color: var(--text-2);
+    transition: all 0.25s var(--ease-out);
+  }
+  .pcard-close:hover { color: #fff; border-color: var(--border-red); }
+  .pcard-season { color: var(--text-2); margin-bottom: 18px; }
+  .pcard-hero { display: flex; align-items: flex-end; gap: 18px; margin-bottom: 22px; }
+  .pcard-num {
+    font-size: 96px; line-height: 0.82; color: var(--mu-red);
+    text-shadow: 0 0 40px rgba(218,41,28,0.5);
+    letter-spacing: -0.02em;
+  }
+  .pcard-pos { color: var(--mu-red); margin-bottom: 4px; }
+  .pcard-name { font-size: 34px; letter-spacing: 0.04em; color: #fff; line-height: 0.95; }
+  .pcard-fullname { font-size: 12px; color: var(--text-2); margin-top: 4px; letter-spacing: 0.04em; }
+  .pcard-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px 12px; margin: 18px 0; }
+  .pcard-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 18px 0; }
+  .pcard-trophies { margin: 16px 0 12px; }
+  .pcard-trophies-list { margin-top: 6px; font-size: 13px; color: var(--text-1); line-height: 1.5; }
+  .pcard-nav { display: flex; gap: 8px; margin-top: 18px; padding-top: 14px; border-top: 1px solid var(--border-0); }
+  .pcard-nav-btn {
+    flex: 1; padding: 10px;
+    border: 1px solid var(--border-1); border-radius: 8px;
+    color: var(--text-1);
+    transition: all 0.25s var(--ease-out);
+  }
+  .pcard-nav-btn:hover:not(:disabled) { color: #fff; border-color: var(--border-red); background: rgba(218,41,28,0.08); }
+  .pcard-nav-btn:disabled { opacity: 0.25; cursor: default; }
+
+  .pcard-row-label { margin-bottom: 4px; }
+  .pcard-row-value { font-size: 13px; color: var(--text-0); }
+  .pcard-stat {
+    padding: 12px 8px;
+    border: 1px solid var(--border-0);
+    border-radius: 8px;
+    text-align: center;
+    background: rgba(255,255,255,0.02);
+  }
+  .pcard-stat .display { font-size: 26px; color: #fff; }
+
+  /* ---- TROPHY ---- */
+  .trophy { min-height: 100vh; padding-top: 76px; position: relative; z-index: 2; }
+  .trophy-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 14px;
+    padding: 40px;
+  }
+  .trophy-card {
+    position: relative;
+    text-align: left;
+    padding: 24px;
+    border-radius: 14px;
+    border: 1px solid var(--border-1);
+    background: linear-gradient(180deg, rgba(20,20,20,0.7), rgba(10,10,10,0.8));
+    backdrop-filter: blur(12px);
+    transition: all 0.35s var(--ease-out);
+    overflow: hidden;
+  }
+  .trophy-card:hover {
+    border-color: var(--border-red);
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 40px rgba(218,41,28,0.15);
+  }
+  .trophy-icon { font-size: 28px; margin-bottom: 10px; filter: saturate(0.8); }
+  .trophy-count { font-size: 64px; line-height: 0.9; color: var(--mu-red); text-shadow: 0 0 30px rgba(218,41,28,0.5); }
+  .trophy-name { font-family: var(--font-display); font-size: 20px; letter-spacing: 0.06em; margin-top: 8px; color: #fff; }
+  .trophy-info p { font-size: 13px; color: var(--text-1); line-height: 1.55; }
+
+  /* ---- TIMELINE ---- */
+  .tl { min-height: 100vh; padding-top: 76px; position: relative; z-index: 2; }
+  .tl-wrap { position: relative; padding: 70px 40px 80px; }
+  .tl-line {
+    position: absolute;
+    top: 90px; left: 40px; right: 40px; height: 1px;
+    background: linear-gradient(90deg, transparent, var(--mu-red), var(--mu-red), transparent);
+    opacity: 0.5;
+  }
+  .tl-track { display: flex; gap: 24px; overflow-x: auto; scrollbar-width: none; padding-bottom: 12px; }
+  .tl-track::-webkit-scrollbar { display: none; }
+  .tl-item { position: relative; flex-shrink: 0; width: 240px; padding-top: 30px; }
+  .tl-dot {
+    position: absolute; top: 0; left: 0;
+    width: 12px; height: 12px;
+    border-radius: 999px;
+    background: var(--mu-red);
+    box-shadow: 0 0 20px var(--mu-red);
+  }
+  .tl-year { font-size: 42px; color: #fff; line-height: 1; letter-spacing: 0.03em; }
+  .tl-title { font-family: var(--font-display); font-size: 18px; letter-spacing: 0.06em; color: var(--mu-red); margin-top: 6px; }
+  .tl-text { font-size: 13px; color: var(--text-1); line-height: 1.55; margin-top: 10px; }
+
+  /* ---- FOOTER ---- */
+  .footer {
+    position: relative; z-index: 2;
+    border-top: 1px solid var(--border-0);
+    background: linear-gradient(180deg, transparent, rgba(0,0,0,0.6));
+    padding: 40px 40px 30px;
+  }
+  .footer-inner { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+  .footer-right { color: var(--text-3); max-width: 340px; text-align: right; }
+
+  /* ---- RESPONSIVE ---- */
+  @media (max-width: 900px) {
+    .desktop-only { display: none; }
+    .mobile-only { display: grid; }
+    .nav { padding: 12px 16px; }
+    .nav-club-name { font-size: 13px; letter-spacing: 0.1em; }
+    .sound-btn { padding: 6px 10px; font-size: 9px; }
+
+    .locker-head { padding: 28px 20px 12px; flex-direction: column; align-items: flex-start; gap: 12px; }
+    .locker-head-right { display: none; }
+    .rail-track { padding: 0 20px; gap: 0; }
+    .locker-rail-wrap { margin-top: 30px; padding-bottom: 90px; }
+    .locker-foot { padding: 18px 20px 30px; flex-wrap: wrap; gap: 8px; }
+
+    .pcard { top: auto; right: 0; left: 0; bottom: 0; width: 100%; max-height: 62vh; border-radius: 16px 16px 0 0; }
+    .pcard-inner { border-radius: 16px 16px 0 0; padding: 20px 18px; }
+    .pcard-num { font-size: 72px; }
+    .pcard-name { font-size: 26px; }
+
+    .trophy-grid { padding: 20px; grid-template-columns: 1fr; }
+    .tl-wrap { padding: 40px 20px 60px; }
+    .tl-line { left: 20px; right: 20px; top: 60px; }
+    .tl-item { width: 200px; }
+    .footer { padding: 24px 20px 20px; }
+    .footer-right { text-align: left; }
+  }
+  @media (max-width: 640px) {
+    .season-bar { padding: 10px 14px; gap: 10px; }
+    .season-label { display: none; }
+    .filter { padding: 8px 14px; gap: 10px; }
+    .filter-label { display: none; }
+    .shirt-wrap { width: 138px; }
+    .shirt { width: 108px; height: 132px; }
+    .shirt-num { font-size: 44px; }
+    .shirt-name { font-size: 14px; max-width: 96px; }
+    .shirt-stage { height: 200px; }
+    .shirt-shadow { width: 108px; }
+  }
+</style>
+</head>
+<body>
+<div id="root"></div>
+
+<script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@18.3.1",
+    "react-dom": "https://esm.sh/react-dom@18.3.1",
+    "react-dom/client": "https://esm.sh/react-dom@18.3.1/client",
+    "framer-motion": "https://esm.sh/framer-motion@11.3.19?external=react,react-dom"
+  }
+}
+</script>
+
+<script type="module">
+import React, { useEffect, useMemo, useRef, useState } from 'react';
+import { createRoot } from 'react-dom/client';
+import { motion, AnimatePresence } from 'framer-motion';
+
+const { useEffect: _ue, useMemo: _um, useRef: _ur, useState: _us } = React;
+
+/* ====================================================================
+   DATA
+==================================================================== */
+const SEASONS = [
+  {
+    id: '1960s', label: '1960s', year: '1967/68',
+    players: [
+      { id: 'stepney-68', name: 'STEPNEY', fullName: 'Alex Stepney', number: 1, position: 'GK', nationality: 'England', birthDate: '18 September 1942', height: '183 cm', appearances: '—', goals: '—', assists: '—', trophies: 'European Cup 1968', kit: 'home' },
+      { id: 'dunne-68', name: 'DUNNE', fullName: 'Tony Dunne', number: 3, position: 'DEF', nationality: 'Ireland', birthDate: '24 July 1941', height: '168 cm', appearances: '—', goals: '—', assists: '—', trophies: 'European Cup 1968', kit: 'home' },
+      { id: 'foulkes-68', name: 'FOULKES', fullName: 'Bill Foulkes', number: 5, position: 'DEF', nationality: 'England', birthDate: '5 January 1932', height: '180 cm', appearances: '—', goals: '—', assists: '—', trophies: 'European Cup 1968', kit: 'home' },
+      { id: 'stiles-68', name: 'STILES', fullName: 'Nobby Stiles', number: 6, position: 'MID', nationality: 'England', birthDate: '18 May 1942', height: '168 cm', appearances: '—', goals: '—', assists: '—', trophies: 'European Cup 1968', kit: 'home' },
+      { id: 'charlton-68', name: 'CHARLTON', fullName: 'Sir Bobby Charlton', number: 9, position: 'MID', nationality: 'England', birthDate: '11 October 1937', height: '173 cm', appearances: '—', goals: '—', assists: '—', trophies: 'European Cup 1968', kit: 'home' },
+      { id: 'best-68', name: 'BEST', fullName: 'George Best', number: 7, position: 'FWD', nationality: 'Northern Ireland', birthDate: '22 May 1946', height: '175 cm', appearances: '—', goals: '—', assists: '—', trophies: 'European Cup 1968', kit: 'home' },
+      { id: 'kidd-68', name: 'KIDD', fullName: 'Brian Kidd', number: 10, position: 'FWD', nationality: 'England', birthDate: '29 May 1949', height: '178 cm', appearances: '—', goals: '—', assists: '—', trophies: 'European Cup 1968', kit: 'home' },
+      { id: 'law-68', name: 'LAW', fullName: 'Denis Law', number: 8, position: 'FWD', nationality: 'Scotland', birthDate: '24 February 1940', height: '175 cm', appearances: '—', goals: '—', assists: '—', trophies: 'European Cup 1968', kit: 'home' }
+    ]
+  },
+  {
+    id: '1990s', label: '1990s', year: '1993/94',
+    players: [
+      { id: 'schmeichel-94', name: 'SCHMEICHEL', fullName: 'Peter Schmeichel', number: 1, position: 'GK', nationality: 'Denmark', birthDate: '18 November 1963', height: '191 cm', appearances: '40', goals: 0, assists: 0, trophies: 'PL, FA Cup', kit: 'home' },
+      { id: 'parker-94', name: 'PARKER', fullName: 'Paul Parker', number: 2, position: 'DEF', nationality: 'England', birthDate: '4 April 1964', height: '175 cm', appearances: '37', goals: 1, assists: '—', trophies: 'PL, FA Cup', kit: 'home' },
+      { id: 'bruce-94', name: 'BRUCE', fullName: 'Steve Bruce', number: 4, position: 'DEF', nationality: 'England', birthDate: '31 December 1960', height: '183 cm', appearances: '41', goals: 4, assists: '—', trophies: 'PL, FA Cup', kit: 'home' },
+      { id: 'pallister-94', name: 'PALLISTER', fullName: 'Gary Pallister', number: 6, position: 'DEF', nationality: 'England', birthDate: '30 June 1965', height: '191 cm', appearances: '40', goals: 1, assists: '—', trophies: 'PL, FA Cup', kit: 'home' },
+      { id: 'irwin-94', name: 'IRWIN', fullName: 'Denis Irwin', number: 3, position: 'DEF', nationality: 'Ireland', birthDate: '31 October 1965', height: '175 cm', appearances: '42', goals: 4, assists: '—', trophies: 'PL, FA Cup', kit: 'home' },
+      { id: 'keane-94', name: 'KEANE', fullName: 'Roy Keane', number: 16, position: 'MID', nationality: 'Ireland', birthDate: '10 August 1971', height: '180 cm', appearances: '37', goals: 4, assists: '—', trophies: 'PL, FA Cup', kit: 'home' },
+      { id: 'ince-94', name: 'INCE', fullName: 'Paul Ince', number: 8, position: 'MID', nationality: 'England', birthDate: '21 October 1967', height: '178 cm', appearances: '39', goals: 4, assists: '—', trophies: 'PL, FA Cup', kit: 'home' },
+      { id: 'giggs-94', name: 'GIGGS', fullName: 'Ryan Giggs', number: 11, position: 'MID', nationality: 'Wales', birthDate: '29 November 1973', height: '180 cm', appearances: '38', goals: 13, assists: '—', trophies: 'PL, FA Cup', kit: 'home' },
+      { id: 'cantona-94', name: 'CANTONA', fullName: 'Eric Cantona', number: 7, position: 'FWD', nationality: 'France', birthDate: '24 May 1966', height: '188 cm', appearances: '34', goals: 18, assists: '—', trophies: 'PL, FA Cup', kit: 'home' },
+      { id: 'hughes-94', name: 'HUGHES', fullName: 'Mark Hughes', number: 10, position: 'FWD', nationality: 'Wales', birthDate: '1 November 1963', height: '178 cm', appearances: '36', goals: 12, assists: '—', trophies: 'PL, FA Cup', kit: 'home' },
+      { id: 'kanchelskis-94', name: 'KANCHELSKIS', fullName: 'Andrei Kanchelskis', number: 14, position: 'MID', nationality: 'Russia', birthDate: '23 January 1969', height: '178 cm', appearances: '30', goals: 6, assists: '—', trophies: 'PL, FA Cup', kit: 'home' }
+    ]
+  },
+  {
+    id: '1998-99', label: '1998/99', year: '1998/99',
+    players: [
+      { id: 'schmeichel-99', name: 'SCHMEICHEL', fullName: 'Peter Schmeichel', number: 1, position: 'GK', nationality: 'Denmark', birthDate: '18 November 1963', height: '191 cm', appearances: '56', goals: 0, assists: 0, trophies: 'Treble 1999', kit: 'home' },
+      { id: 'gneville-99', name: 'G. NEVILLE', fullName: 'Gary Neville', number: 2, position: 'DEF', nationality: 'England', birthDate: '18 February 1975', height: '178 cm', appearances: '54', goals: 1, assists: '—', trophies: 'Treble 1999', kit: 'home' },
+      { id: 'stam-99', name: 'STAM', fullName: 'Jaap Stam', number: 6, position: 'DEF', nationality: 'Netherlands', birthDate: '17 July 1972', height: '191 cm', appearances: '51', goals: 3, assists: '—', trophies: 'Treble 1999', kit: 'home' },
+      { id: 'johnsen-99', name: 'JOHNSEN', fullName: 'Ronny Johnsen', number: 5, position: 'DEF', nationality: 'Norway', birthDate: '10 June 1969', height: '188 cm', appearances: '38', goals: 2, assists: '—', trophies: 'Treble 1999', kit: 'home' },
+      { id: 'irwin-99', name: 'IRWIN', fullName: 'Denis Irwin', number: 3, position: 'DEF', nationality: 'Ireland', birthDate: '31 October 1965', height: '175 cm', appearances: '48', goals: 3, assists: '—', trophies: 'Treble 1999', kit: 'home' },
+      { id: 'beckham-99', name: 'BECKHAM', fullName: 'David Beckham', number: 7, position: 'MID', nationality: 'England', birthDate: '2 May 1975', height: '183 cm', appearances: '55', goals: 9, assists: '—', trophies: 'Treble 1999', kit: 'home' },
+      { id: 'keane-99', name: 'KEANE', fullName: 'Roy Keane', number: 16, position: 'MID', nationality: 'Ireland', birthDate: '10 August 1971', height: '180 cm', appearances: '51', goals: 4, assists: '—', trophies: 'Treble 1999', kit: 'home' },
+      { id: 'scholes-99', name: 'SCHOLES', fullName: 'Paul Scholes', number: 18, position: 'MID', nationality: 'England', birthDate: '16 November 1974', height: '170 cm', appearances: '44', goals: 11, assists: '—', trophies: 'Treble 1999', kit: 'home' },
+      { id: 'giggs-99', name: 'GIGGS', fullName: 'Ryan Giggs', number: 11, position: 'MID', nationality: 'Wales', birthDate: '29 November 1973', height: '180 cm', appearances: '43', goals: 10, assists: '—', trophies: 'Treble 1999', kit: 'home' },
+      { id: 'cole-99', name: 'COLE', fullName: 'Andy Cole', number: 9, position: 'FWD', nationality: 'England', birthDate: '15 October 1971', height: '178 cm', appearances: '45', goals: 24, assists: '—', trophies: 'Treble 1999', kit: 'home' },
+      { id: 'yorke-99', name: 'YORKE', fullName: 'Dwight Yorke', number: 19, position: 'FWD', nationality: 'Trinidad & Tobago', birthDate: '3 November 1971', height: '178 cm', appearances: '51', goals: 29, assists: '—', trophies: 'Treble 1999', kit: 'home' },
+      { id: 'solskjaer-99', name: 'SOLSKJAER', fullName: 'Ole Gunnar Solskjær', number: 20, position: 'FWD', nationality: 'Norway', birthDate: '26 February 1973', height: '178 cm', appearances: '45', goals: 18, assists: '—', trophies: 'Treble 1999', kit: 'home' },
+      { id: 'sheringham-99', name: 'SHERINGHAM', fullName: 'Teddy Sheringham', number: 10, position: 'FWD', nationality: 'England', birthDate: '2 April 1966', height: '183 cm', appearances: '30', goals: 8, assists: '—', trophies: 'Treble 1999', kit: 'home' }
+    ]
+  },
+  {
+    id: '2007-08', label: '2007/08', year: '2007/08',
+    players: [
+      { id: 'vds-08', name: 'VAN DER SAR', fullName: 'Edwin van der Sar', number: 1, position: 'GK', nationality: 'Netherlands', birthDate: '29 October 1970', height: '197 cm', appearances: '44', goals: 0, assists: 0, trophies: 'PL, UCL 2008', kit: 'home' },
+      { id: 'gneville-08', name: 'G. NEVILLE', fullName: 'Gary Neville', number: 2, position: 'DEF', nationality: 'England', birthDate: '18 February 1975', height: '178 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL, UCL 2008', kit: 'home' },
+      { id: 'ferdinand-08', name: 'FERDINAND', fullName: 'Rio Ferdinand', number: 5, position: 'DEF', nationality: 'England', birthDate: '7 November 1978', height: '189 cm', appearances: '51', goals: 3, assists: '—', trophies: 'PL, UCL 2008', kit: 'home' },
+      { id: 'vidic-08', name: 'VIDIC', fullName: 'Nemanja Vidić', number: 15, position: 'DEF', nationality: 'Serbia', birthDate: '21 October 1981', height: '188 cm', appearances: '46', goals: 4, assists: '—', trophies: 'PL, UCL 2008', kit: 'home' },
+      { id: 'evra-08', name: 'EVRA', fullName: 'Patrice Evra', number: 3, position: 'DEF', nationality: 'France', birthDate: '15 May 1981', height: '175 cm', appearances: '48', goals: 1, assists: '—', trophies: 'PL, UCL 2008', kit: 'home' },
+      { id: 'carrick-08', name: 'CARRICK', fullName: 'Michael Carrick', number: 16, position: 'MID', nationality: 'England', birthDate: '28 July 1981', height: '188 cm', appearances: '49', goals: 2, assists: '—', trophies: 'PL, UCL 2008', kit: 'home' },
+      { id: 'scholes-08', name: 'SCHOLES', fullName: 'Paul Scholes', number: 18, position: 'MID', nationality: 'England', birthDate: '16 November 1974', height: '170 cm', appearances: '38', goals: 3, assists: '—', trophies: 'PL, UCL 2008', kit: 'home' },
+      { id: 'hargreaves-08', name: 'HARGREAVES', fullName: 'Owen Hargreaves', number: 4, position: 'MID', nationality: 'England', birthDate: '20 January 1981', height: '180 cm', appearances: '34', goals: 2, assists: '—', trophies: 'PL, UCL 2008', kit: 'home' },
+      { id: 'ronaldo-08', name: 'RONALDO', fullName: 'Cristiano Ronaldo', number: 7, position: 'FWD', nationality: 'Portugal', birthDate: '5 February 1985', height: '187 cm', appearances: '49', goals: 42, assists: '—', trophies: 'PL, UCL 2008 · Ballon d’Or', kit: 'home' },
+      { id: 'rooney-08', name: 'ROONEY', fullName: 'Wayne Rooney', number: 10, position: 'FWD', nationality: 'England', birthDate: '24 October 1985', height: '176 cm', appearances: '43', goals: 18, assists: '—', trophies: 'PL, UCL 2008', kit: 'home' },
+      { id: 'tevez-08', name: 'TEVEZ', fullName: 'Carlos Tevez', number: 32, position: 'FWD', nationality: 'Argentina', birthDate: '5 February 1984', height: '173 cm', appearances: '48', goals: 19, assists: '—', trophies: 'PL, UCL 2008', kit: 'home' },
+      { id: 'giggs-08', name: 'GIGGS', fullName: 'Ryan Giggs', number: 11, position: 'MID', nationality: 'Wales', birthDate: '29 November 1973', height: '180 cm', appearances: '41', goals: 4, assists: '—', trophies: 'PL, UCL 2008', kit: 'home' },
+      { id: 'park-08', name: 'PARK', fullName: 'Park Ji-sung', number: 13, position: 'MID', nationality: 'South Korea', birthDate: '25 February 1981', height: '178 cm', appearances: '40', goals: 4, assists: '—', trophies: 'PL, UCL 2008', kit: 'home' },
+      { id: 'nani-08', name: 'NANI', fullName: 'Nani', number: 17, position: 'MID', nationality: 'Portugal', birthDate: '17 November 1986', height: '175 cm', appearances: '41', goals: 4, assists: '—', trophies: 'PL, UCL 2008', kit: 'home' }
+    ]
+  },
+  {
+    id: '2008-09', label: '2008/09', year: '2008/09',
+    players: [
+      { id: 'vds-09', name: 'VAN DER SAR', fullName: 'Edwin van der Sar', number: 1, position: 'GK', nationality: 'Netherlands', birthDate: '29 October 1970', height: '197 cm', appearances: '—', goals: 0, assists: 0, trophies: 'PL 2009', kit: 'home' },
+      { id: 'oshea-09', name: "O'SHEA", fullName: "John O'Shea", number: 22, position: 'DEF', nationality: 'Ireland', birthDate: '30 April 1981', height: '188 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2009', kit: 'home' },
+      { id: 'ferdinand-09', name: 'FERDINAND', fullName: 'Rio Ferdinand', number: 5, position: 'DEF', nationality: 'England', birthDate: '7 November 1978', height: '189 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2009', kit: 'home' },
+      { id: 'vidic-09', name: 'VIDIC', fullName: 'Nemanja Vidić', number: 15, position: 'DEF', nationality: 'Serbia', birthDate: '21 October 1981', height: '188 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2009', kit: 'home' },
+      { id: 'evra-09', name: 'EVRA', fullName: 'Patrice Evra', number: 3, position: 'DEF', nationality: 'France', birthDate: '15 May 1981', height: '175 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2009', kit: 'home' },
+      { id: 'carrick-09', name: 'CARRICK', fullName: 'Michael Carrick', number: 16, position: 'MID', nationality: 'England', birthDate: '28 July 1981', height: '188 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2009', kit: 'home' },
+      { id: 'fletcher-09', name: 'FLETCHER', fullName: 'Darren Fletcher', number: 24, position: 'MID', nationality: 'Scotland', birthDate: '1 February 1984', height: '183 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2009', kit: 'home' },
+      { id: 'giggs-09', name: 'GIGGS', fullName: 'Ryan Giggs', number: 11, position: 'MID', nationality: 'Wales', birthDate: '29 November 1973', height: '180 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2009 · PFA POTY', kit: 'home' },
+      { id: 'ronaldo-09', name: 'RONALDO', fullName: 'Cristiano Ronaldo', number: 7, position: 'FWD', nationality: 'Portugal', birthDate: '5 February 1985', height: '187 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2009 · FIFA POTY', kit: 'home' },
+      { id: 'rooney-09', name: 'ROONEY', fullName: 'Wayne Rooney', number: 10, position: 'FWD', nationality: 'England', birthDate: '24 October 1985', height: '176 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2009', kit: 'home' },
+      { id: 'berbatov-09', name: 'BERBATOV', fullName: 'Dimitar Berbatov', number: 9, position: 'FWD', nationality: 'Bulgaria', birthDate: '30 January 1981', height: '189 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2009', kit: 'home' },
+      { id: 'park-09', name: 'PARK', fullName: 'Park Ji-sung', number: 13, position: 'MID', nationality: 'South Korea', birthDate: '25 February 1981', height: '178 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2009', kit: 'home' },
+      { id: 'tevez-09', name: 'TEVEZ', fullName: 'Carlos Tevez', number: 32, position: 'FWD', nationality: 'Argentina', birthDate: '5 February 1984', height: '173 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2009', kit: 'home' }
+    ]
+  },
+  {
+    id: '2012-13', label: '2012/13', year: '2012/13',
+    players: [
+      { id: 'ddg-13', name: 'DE GEA', fullName: 'David de Gea', number: 1, position: 'GK', nationality: 'Spain', birthDate: '7 November 1990', height: '192 cm', appearances: '—', goals: 0, assists: 0, trophies: 'PL 2013', kit: 'home' },
+      { id: 'rafael-13', name: 'RAFAEL', fullName: 'Rafael da Silva', number: 2, position: 'DEF', nationality: 'Brazil', birthDate: '9 July 1990', height: '172 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2013', kit: 'home' },
+      { id: 'ferdinand-13', name: 'FERDINAND', fullName: 'Rio Ferdinand', number: 5, position: 'DEF', nationality: 'England', birthDate: '7 November 1978', height: '189 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2013', kit: 'home' },
+      { id: 'vidic-13', name: 'VIDIC', fullName: 'Nemanja Vidić', number: 15, position: 'DEF', nationality: 'Serbia', birthDate: '21 October 1981', height: '188 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2013', kit: 'home' },
+      { id: 'evra-13', name: 'EVRA', fullName: 'Patrice Evra', number: 3, position: 'DEF', nationality: 'France', birthDate: '15 May 1981', height: '175 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2013', kit: 'home' },
+      { id: 'carrick-13', name: 'CARRICK', fullName: 'Michael Carrick', number: 16, position: 'MID', nationality: 'England', birthDate: '28 July 1981', height: '188 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2013', kit: 'home' },
+      { id: 'giggs-13', name: 'GIGGS', fullName: 'Ryan Giggs', number: 11, position: 'MID', nationality: 'Wales', birthDate: '29 November 1973', height: '180 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2013', kit: 'home' },
+      { id: 'rooney-13', name: 'ROONEY', fullName: 'Wayne Rooney', number: 10, position: 'FWD', nationality: 'England', birthDate: '24 October 1985', height: '176 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2013', kit: 'home' },
+      { id: 'kagawa-13', name: 'KAGAWA', fullName: 'Shinji Kagawa', number: 26, position: 'MID', nationality: 'Japan', birthDate: '17 March 1989', height: '175 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2013', kit: 'home' },
+      { id: 'rvp-13', name: 'VAN PERSIE', fullName: 'Robin van Persie', number: 20, position: 'FWD', nationality: 'Netherlands', birthDate: '6 August 1983', height: '188 cm', appearances: '—', goals: 26, assists: '—', trophies: 'PL 2013 · Golden Boot', kit: 'home' },
+      { id: 'chicharito-13', name: 'HERNANDEZ', fullName: 'Javier Hernández', number: 14, position: 'FWD', nationality: 'Mexico', birthDate: '1 June 1988', height: '175 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2013', kit: 'home' },
+      { id: 'valencia-13', name: 'VALENCIA', fullName: 'Antonio Valencia', number: 7, position: 'MID', nationality: 'Ecuador', birthDate: '4 August 1985', height: '180 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2013', kit: 'home' },
+      { id: 'young-13', name: 'YOUNG', fullName: 'Ashley Young', number: 18, position: 'MID', nationality: 'England', birthDate: '9 July 1985', height: '175 cm', appearances: '—', goals: '—', assists: '—', trophies: 'PL 2013', kit: 'home' }
+    ]
+  },
+  {
+    id: '2016-17', label: '2016/17', year: '2016/17',
+    players: [
+      { id: 'ddg-17', name: 'DE GEA', fullName: 'David de Gea', number: 1, position: 'GK', nationality: 'Spain', birthDate: '7 November 1990', height: '192 cm', appearances: '—', goals: 0, assists: 0, trophies: 'EFL Cup, UEL 2017', kit: 'home' },
+      { id: 'valencia-17', name: 'VALENCIA', fullName: 'Antonio Valencia', number: 25, position: 'DEF', nationality: 'Ecuador', birthDate: '4 August 1985', height: '180 cm', appearances: '—', goals: '—', assists: '—', trophies: 'EFL Cup, UEL 2017', kit: 'home' },
+      { id: 'bailly-17', name: 'BAILLY', fullName: 'Eric Bailly', number: 3, position: 'DEF', nationality: 'Ivory Coast', birthDate: '12 April 1994', height: '187 cm', appearances: '—', goals: '—', assists: '—', trophies: 'EFL Cup, UEL 2017', kit: 'home' },
+      { id: 'rojo-17', name: 'ROJO', fullName: 'Marcos Rojo', number: 5, position: 'DEF', nationality: 'Argentina', birthDate: '20 March 1990', height: '188 cm', appearances: '—', goals: '—', assists: '—', trophies: 'EFL Cup, UEL 2017', kit: 'home' },
+      { id: 'blind-17', name: 'BLIND', fullName: 'Daley Blind', number: 17, position: 'DEF', nationality: 'Netherlands', birthDate: '9 March 1990', height: '180 cm', appearances: '—', goals: '—', assists: '—', trophies: 'EFL Cup, UEL 2017', kit: 'home' },
+      { id: 'herrera-17', name: 'HERRERA', fullName: 'Ander Herrera', number: 21, position: 'MID', nationality: 'Spain', birthDate: '14 August 1989', height: '182 cm', appearances: '—', goals: '—', assists: '—', trophies: 'EFL Cup, UEL 2017', kit: 'home' },
+      { id: 'pogba-17', name: 'POGBA', fullName: 'Paul Pogba', number: 6, position: 'MID', nationality: 'France', birthDate: '15 March 1993', height: '191 cm', appearances: '—', goals: '—', assists: '—', trophies: 'EFL Cup, UEL 2017', kit: 'home' },
+      { id: 'mkhitaryan-17', name: 'MKHITARYAN', fullName: 'Henrikh Mkhitaryan', number: 22, position: 'MID', nationality: 'Armenia', birthDate: '21 January 1989', height: '177 cm', appearances: '—', goals: '—', assists: '—', trophies: 'EFL Cup, UEL 2017', kit: 'home' },
+      { id: 'mata-17', name: 'MATA', fullName: 'Juan Mata', number: 8, position: 'MID', nationality: 'Spain', birthDate: '28 April 1988', height: '170 cm', appearances: '—', goals: '—', assists: '—', trophies: 'EFL Cup, UEL 2017', kit: 'home' },
+      { id: 'ibrahimovic-17', name: 'IBRAHIMOVIC', fullName: 'Zlatan Ibrahimović', number: 9, position: 'FWD', nationality: 'Sweden', birthDate: '3 October 1981', height: '195 cm', appearances: '—', goals: '—', assists: '—', trophies: 'EFL Cup, UEL 2017', kit: 'home' },
+      { id: 'rashford-17', name: 'RASHFORD', fullName: 'Marcus Rashford', number: 19, position: 'FWD', nationality: 'England', birthDate: '31 October 1997', height: '180 cm', appearances: '—', goals: '—', assists: '—', trophies: 'EFL Cup, UEL 2017', kit: 'home' },
+      { id: 'martial-17', name: 'MARTIAL', fullName: 'Anthony Martial', number: 11, position: 'FWD', nationality: 'France', birthDate: '5 December 1995', height: '181 cm', appearances: '—', goals: '—', assists: '—', trophies: 'EFL Cup, UEL 2017', kit: 'home' }
+    ]
+  },
+  {
+    id: '2020-21', label: '2020/21', year: '2020/21',
+    players: [
+      { id: 'ddg-21', name: 'DE GEA', fullName: 'David de Gea', number: 1, position: 'GK', nationality: 'Spain', birthDate: '7 November 1990', height: '192 cm', appearances: '—', goals: 0, assists: 0, trophies: '—', kit: 'home' },
+      { id: 'wanbisaka-21', name: 'WAN-BISSAKA', fullName: 'Aaron Wan-Bissaka', number: 29, position: 'DEF', nationality: 'England', birthDate: '26 November 1997', height: '183 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'maguire-21', name: 'MAGUIRE', fullName: 'Harry Maguire', number: 5, position: 'DEF', nationality: 'England', birthDate: '5 March 1993', height: '194 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'lindelof-21', name: 'LINDELÖF', fullName: 'Victor Lindelöf', number: 2, position: 'DEF', nationality: 'Sweden', birthDate: '17 July 1994', height: '187 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'shaw-21', name: 'SHAW', fullName: 'Luke Shaw', number: 23, position: 'DEF', nationality: 'England', birthDate: '12 July 1995', height: '185 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'fred-21', name: 'FRED', fullName: 'Fred', number: 17, position: 'MID', nationality: 'Brazil', birthDate: '5 March 1993', height: '169 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'mctominay-21', name: 'MCTOMINAY', fullName: 'Scott McTominay', number: 39, position: 'MID', nationality: 'Scotland', birthDate: '8 December 1996', height: '193 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'bruno-21', name: 'FERNANDES', fullName: 'Bruno Fernandes', number: 18, position: 'MID', nationality: 'Portugal', birthDate: '8 September 1994', height: '179 cm', appearances: '—', goals: 28, assists: '—', trophies: '—', kit: 'home' },
+      { id: 'pogba-21', name: 'POGBA', fullName: 'Paul Pogba', number: 6, position: 'MID', nationality: 'France', birthDate: '15 March 1993', height: '191 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'rashford-21', name: 'RASHFORD', fullName: 'Marcus Rashford', number: 10, position: 'FWD', nationality: 'England', birthDate: '31 October 1997', height: '180 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'greenwood-21', name: 'GREENWOOD', fullName: 'Mason Greenwood', number: 11, position: 'FWD', nationality: 'England', birthDate: '1 October 2001', height: '181 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'cavani-21', name: 'CAVANI', fullName: 'Edinson Cavani', number: 7, position: 'FWD', nationality: 'Uruguay', birthDate: '14 February 1987', height: '184 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' }
+    ]
+  },
+  {
+    id: '2023-24', label: '2023/24', year: '2023/24',
+    players: [
+      { id: 'onana-24', name: 'ONANA', fullName: 'André Onana', number: 24, position: 'GK', nationality: 'Cameroon', birthDate: '2 April 1996', height: '190 cm', appearances: '—', goals: 0, assists: 0, trophies: 'FA Cup 2024', kit: 'home' },
+      { id: 'dalot-24', name: 'DALOT', fullName: 'Diogo Dalot', number: 20, position: 'DEF', nationality: 'Portugal', birthDate: '18 March 1999', height: '183 cm', appearances: '—', goals: '—', assists: '—', trophies: 'FA Cup 2024', kit: 'home' },
+      { id: 'varane-24', name: 'VARANE', fullName: 'Raphaël Varane', number: 19, position: 'DEF', nationality: 'France', birthDate: '25 April 1993', height: '191 cm', appearances: '—', goals: '—', assists: '—', trophies: 'FA Cup 2024', kit: 'home' },
+      { id: 'martinez-24', name: 'MARTÍNEZ', fullName: 'Lisandro Martínez', number: 6, position: 'DEF', nationality: 'Argentina', birthDate: '18 January 1998', height: '175 cm', appearances: '—', goals: '—', assists: '—', trophies: 'FA Cup 2024', kit: 'home' },
+      { id: 'shaw-24', name: 'SHAW', fullName: 'Luke Shaw', number: 23, position: 'DEF', nationality: 'England', birthDate: '12 July 1995', height: '185 cm', appearances: '—', goals: '—', assists: '—', trophies: 'FA Cup 2024', kit: 'home' },
+      { id: 'casemiro-24', name: 'CASEMIRO', fullName: 'Casemiro', number: 18, position: 'MID', nationality: 'Brazil', birthDate: '23 February 1992', height: '185 cm', appearances: '—', goals: '—', assists: '—', trophies: 'FA Cup 2024', kit: 'home' },
+      { id: 'mainoo-24', name: 'MAINOO', fullName: 'Kobbie Mainoo', number: 37, position: 'MID', nationality: 'England', birthDate: '19 April 2005', height: '175 cm', appearances: '—', goals: '—', assists: '—', trophies: 'FA Cup 2024', kit: 'home' },
+      { id: 'bruno-24', name: 'FERNANDES', fullName: 'Bruno Fernandes', number: 8, position: 'MID', nationality: 'Portugal', birthDate: '8 September 1994', height: '179 cm', appearances: '—', goals: '—', assists: '—', trophies: 'FA Cup 2024', kit: 'home' },
+      { id: 'garnacho-24', name: 'GARNACHO', fullName: 'Alejandro Garnacho', number: 17, position: 'FWD', nationality: 'Argentina', birthDate: '1 July 2004', height: '180 cm', appearances: '—', goals: '—', assists: '—', trophies: 'FA Cup 2024', kit: 'home' },
+      { id: 'rashford-24', name: 'RASHFORD', fullName: 'Marcus Rashford', number: 10, position: 'FWD', nationality: 'England', birthDate: '31 October 1997', height: '180 cm', appearances: '—', goals: '—', assists: '—', trophies: 'FA Cup 2024', kit: 'home' },
+      { id: 'hojlund-24', name: 'HØJLUND', fullName: 'Rasmus Højlund', number: 11, position: 'FWD', nationality: 'Denmark', birthDate: '4 February 2003', height: '191 cm', appearances: '—', goals: '—', assists: '—', trophies: 'FA Cup 2024', kit: 'home' }
+    ]
+  },
+  {
+    id: '2025-26', label: '2025/26', year: '2025/26',
+    players: [
+      { id: 'onana-26', name: 'ONANA', fullName: 'André Onana', number: 24, position: 'GK', nationality: 'Cameroon', birthDate: '2 April 1996', height: '190 cm', appearances: '—', goals: 0, assists: 0, trophies: '—', kit: 'home' },
+      { id: 'dalot-26', name: 'DALOT', fullName: 'Diogo Dalot', number: 20, position: 'DEF', nationality: 'Portugal', birthDate: '18 March 1999', height: '183 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'yoro-26', name: 'YORO', fullName: 'Leny Yoro', number: 15, position: 'DEF', nationality: 'France', birthDate: '13 November 2005', height: '190 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'martinez-26', name: 'MARTÍNEZ', fullName: 'Lisandro Martínez', number: 6, position: 'DEF', nationality: 'Argentina', birthDate: '18 January 1998', height: '175 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'shaw-26', name: 'SHAW', fullName: 'Luke Shaw', number: 23, position: 'DEF', nationality: 'England', birthDate: '12 July 1995', height: '185 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'ugarte-26', name: 'UGARTE', fullName: 'Manuel Ugarte', number: 25, position: 'MID', nationality: 'Uruguay', birthDate: '11 April 2001', height: '182 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'mainoo-26', name: 'MAINOO', fullName: 'Kobbie Mainoo', number: 37, position: 'MID', nationality: 'England', birthDate: '19 April 2005', height: '175 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'bruno-26', name: 'FERNANDES', fullName: 'Bruno Fernandes', number: 8, position: 'MID', nationality: 'Portugal', birthDate: '8 September 1994', height: '179 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'garnacho-26', name: 'GARNACHO', fullName: 'Alejandro Garnacho', number: 17, position: 'FWD', nationality: 'Argentina', birthDate: '1 July 2004', height: '180 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'amad-26', name: 'DIALLO', fullName: 'Amad Diallo', number: 16, position: 'FWD', nationality: 'Ivory Coast', birthDate: '11 July 2002', height: '175 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'hojlund-26', name: 'HØJLUND', fullName: 'Rasmus Højlund', number: 9, position: 'FWD', nationality: 'Denmark', birthDate: '4 February 2003', height: '191 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' },
+      { id: 'mount-26', name: 'MOUNT', fullName: 'Mason Mount', number: 7, position: 'MID', nationality: 'England', birthDate: '10 January 1999', height: '178 cm', appearances: '—', goals: '—', assists: '—', trophies: '—', kit: 'home' }
+    ]
+  }
+];
+
+const LEGENDS = [
+  { id: 'best', name: 'BEST', fullName: 'George Best', number: 7, position: 'FWD', nationality: 'Northern Ireland', birthDate: '22 May 1946', height: '175 cm', appearances: 470, goals: 179, assists: '—', trophies: 'European Cup 1968 · Ballon d’Or 1968', kit: 'home' },
+  { id: 'charlton', name: 'CHARLTON', fullName: 'Sir Bobby Charlton', number: 9, position: 'MID', nationality: 'England', birthDate: '11 October 1937', height: '173 cm', appearances: 758, goals: 249, assists: '—', trophies: 'European Cup 1968 · Ballon d’Or 1966', kit: 'home' },
+  { id: 'cantona', name: 'CANTONA', fullName: 'Eric Cantona', number: 7, position: 'FWD', nationality: 'France', birthDate: '24 May 1966', height: '188 cm', appearances: 185, goals: 82, assists: '—', trophies: '4× PL, 2× FA Cup', kit: 'home' },
+  { id: 'beckham', name: 'BECKHAM', fullName: 'David Beckham', number: 7, position: 'MID', nationality: 'England', birthDate: '2 May 1975', height: '183 cm', appearances: 394, goals: 85, assists: '—', trophies: '6× PL, UCL 1999, Treble', kit: 'home' },
+  { id: 'keane', name: 'KEANE', fullName: 'Roy Keane', number: 16, position: 'MID', nationality: 'Ireland', birthDate: '10 August 1971', height: '180 cm', appearances: 480, goals: 51, assists: '—', trophies: '7× PL, UCL 1999, Treble', kit: 'home' },
+  { id: 'scholes', name: 'SCHOLES', fullName: 'Paul Scholes', number: 18, position: 'MID', nationality: 'England', birthDate: '16 November 1974', height: '170 cm', appearances: 718, goals: 155, assists: '—', trophies: '11× PL, 2× UCL', kit: 'home' },
+  { id: 'giggs', name: 'GIGGS', fullName: 'Ryan Giggs', number: 11, position: 'MID', nationality: 'Wales', birthDate: '29 November 1973', height: '180 cm', appearances: 963, goals: 168, assists: '—', trophies: '13× PL, 2× UCL', kit: 'home' },
+  { id: 'rooney', name: 'ROONEY', fullName: 'Wayne Rooney', number: 10, position: 'FWD', nationality: 'England', birthDate: '24 October 1985', height: '176 cm', appearances: 559, goals: 253, assists: 145, trophies: '5× PL, UCL 2008', kit: 'home' },
+  { id: 'ronaldo', name: 'RONALDO', fullName: 'Cristiano Ronaldo', number: 7, position: 'FWD', nationality: 'Portugal', birthDate: '5 February 1985', height: '187 cm', appearances: 346, goals: 145, assists: 65, trophies: '3× PL, UCL 2008, Ballon d’Or 2008', kit: 'home' },
+  { id: 'ferdinand', name: 'FERDINAND', fullName: 'Rio Ferdinand', number: 5, position: 'DEF', nationality: 'England', birthDate: '7 November 1978', height: '189 cm', appearances: 455, goals: 8, assists: '—', trophies: '6× PL, UCL 2008', kit: 'home' },
+  { id: 'vidic', name: 'VIDIC', fullName: 'Nemanja Vidić', number: 15, position: 'DEF', nationality: 'Serbia', birthDate: '21 October 1981', height: '188 cm', appearances: 300, goals: 21, assists: '—', trophies: '5× PL, UCL 2008', kit: 'home' },
+  { id: 'schmeichel', name: 'SCHMEICHEL', fullName: 'Peter Schmeichel', number: 1, position: 'GK', nationality: 'Denmark', birthDate: '18 November 1963', height: '191 cm', appearances: 398, goals: 1, assists: '—', trophies: '5× PL, UCL 1999, Treble', kit: 'home' },
+  { id: 'vds', name: 'VAN DER SAR', fullName: 'Edwin van der Sar', number: 1, position: 'GK', nationality: 'Netherlands', birthDate: '29 October 1970', height: '197 cm', appearances: 266, goals: 0, assists: 0, trophies: '4× PL, UCL 2008', kit: 'home' }
+];
+
+const TROPHIES = [
+  { id: 'pl', name: 'Premier League', count: 13, last: '2012/13', description: 'Record English top-flight title haul. The cornerstone of the Ferguson era.' },
+  { id: 'ucl', name: 'UEFA Champions League', count: 3, last: '2007/08', description: '1968, 1999, 2008. Moscow rain, Camp Nou miracle, Wembley glory.' },
+  { id: 'facup', name: 'FA Cup', count: 13, last: '2023/24', description: 'The oldest domestic cup competition in world football.' },
+  { id: 'efl', name: 'EFL / League Cup', count: 6, last: '2022/23', description: 'Six League Cup triumphs, including the 2023 win under Ten Hag.' },
+  { id: 'uel', name: 'UEFA Europa League', count: 1, last: '2016/17', description: 'Won in Stockholm under José Mourinho.' },
+  { id: 'shield', name: 'Community Shield', count: 21, last: '2016', description: 'Traditional curtain-raiser to the English season.' },
+  { id: 'cwc', name: 'FIFA Club World Cup', count: 2, last: '2008', description: 'World champions — 1999 and 2008.' }
+];
+
+const TIMELINE = [
+  { year: '1878', title: 'Newton Heath LYR', text: 'Founded by workers of the Lancashire and Yorkshire Railway depot.' },
+  { year: '1902', title: 'Manchester United', text: 'The club is renamed and reborn in red.' },
+  { year: '1958', title: 'Munich Air Disaster', text: 'The Busby Babes are lost. A club, and a city, mourns.' },
+  { year: '1968', title: 'European Cup', text: 'Charlton, Best, and a Wembley night that changed everything.' },
+  { year: '1990s', title: 'Ferguson Era', text: 'Dominance of English football begins — Class of ’92 emerges.' },
+  { year: '1999', title: 'The Treble', text: 'Premier League, FA Cup, and Champions League — Camp Nou, injury time.' },
+  { year: '2008', title: 'Champions of Europe', text: 'Moscow. Rain. Ronaldo’s header. Van der Sar’s save.' },
+  { year: '2013', title: 'Ferguson Retires', text: 'Twenty-six years. Thirty-eight trophies. An era closes.' },
+  { year: '2024', title: 'FA Cup', text: 'Wembley. Manchester is red — a new chapter under INEOS.' }
+];
+
+/* ====================================================================
+   HOOKS
+==================================================================== */
+function useParallax(strength = 12) {
+  const [pos, setPos] = useState({ x: 0, y: 0 });
+  useEffect(() => {
+    const onMove = (e) => {
+      const x = (e.clientX / window.innerWidth - 0.5) * strength;
+      const y = (e.clientY / window.innerHeight - 0.5) * strength;
+      setPos({ x, y });
+    };
+    window.addEventListener('mousemove', onMove, { passive: true });
+    return () => window.removeEventListener('mousemove', onMove);
+  }, [strength]);
+  return pos;
+}
+
+let sharedAudioCtx = null;
+function audioCtx() {
+  if (!sharedAudioCtx) {
+    const Ctx = window.AudioContext || window.webkitAudioContext;
+    sharedAudioCtx = new Ctx();
+  }
+  return sharedAudioCtx;
+}
+function playTone(freq, dur = 0.06, type = 'sine', gain = 0.04) {
+  try {
+    const c = audioCtx();
+    const o = c.createOscillator();
+    const g = c.createGain();
+    o.type = type;
+    o.frequency.value = freq;
+    g.gain.value = gain;
+    o.connect(g);
+    g.connect(c.destination);
+    const t = c.currentTime;
+    g.gain.setValueAtTime(gain, t);
+    g.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.start(t);
+    o.stop(t + dur);
+  } catch (e) { /* noop */ }
+}
+
+function useSound() {
+  const [enabled, setEnabled] = useState(false);
+  const toggle = () => setEnabled((v) => !v);
+  const hover = () => { if (enabled) playTone(880, 0.03, 'sine', 0.02); };
+  const click = () => { if (enabled) playTone(220, 0.08, 'triangle', 0.05); };
+  return { enabled, toggle, hover, click };
+}
+
+/* ====================================================================
+   INTRO
+==================================================================== */
+function IntroAnimation({ onDone }) {
+  const [step, setStep] = useState(0);
+  const [gone, setGone] = useState(false);
+
+  useEffect(() => {
+    const timers = [
+      setTimeout(() => setStep(1), 700),
+      setTimeout(() => setStep(2), 1700),
+      setTimeout(() => setStep(3), 2700),
+      setTimeout(() => {
+        setGone(true);
+        setTimeout(onDone, 700);
+      }, 3700)
+    ];
+    return () => timers.forEach(clearTimeout);
+  }, [onDone]);
+
+  const titleStyle = { fontFamily: 'var(--font-display)' };
+
+  return (
+    <AnimatePresence>
+      {!gone && (
+        <motion.div
+          className="intro"
+          initial={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="intro-vignette" />
+          <div className="intro-content">
+            <AnimatePresence mode="wait">
+              {step === 0 && (
+                <motion.h1 key="a" className="intro-title" style={titleStyle}
+                  initial={{ opacity: 0, y: 24, filter: 'blur(12px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0)' }}
+                  exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
+                  transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+                >MANCHESTER UNITED</motion.h1>
+              )}
+              {step === 1 && (
+                <motion.h2 key="b" className="intro-title" style={titleStyle}
+                  initial={{ opacity: 0, y: 24, filter: 'blur(12px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0)' }}
+                  exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                >THE RED DEVILS</motion.h2>
+              )}
+              {step === 2 && (
+                <motion.h3 key="c" className="intro-title" style={titleStyle}
+                  initial={{ opacity: 0, y: 24, filter: 'blur(12px)' }}
+                  animate={{ opacity: 1, y: 0, filter: 'blur(0)' }}
+                  exit={{ opacity: 0, y: -20, filter: 'blur(10px)' }}
+                  transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1] }}
+                >DIGITAL LOCKER ROOM</motion.h3>
+              )}
+            </AnimatePresence>
+          </div>
+        </motion.div>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/* ====================================================================
+   NAVIGATION
+==================================================================== */
+const NAV_ITEMS = [
+  { id: 'locker', label: 'LOCKER ROOM' },
+  { id: 'squad', label: 'SQUAD' },
+  { id: 'history', label: 'HISTORY' },
+  { id: 'trophies', label: 'TROPHIES' },
+  { id: 'legends', label: 'LEGENDS' }
+];
+
+function Navigation({ section, onSelect, soundOn, onToggleSound }) {
+  const [open, setOpen] = useState(false);
+
+  return (
+    <>
+      <header className="nav">
+        <div className="nav-left">
+          <div className="crest" aria-hidden>
+            <div className="crest-inner">MU</div>
+          </div>
+          <div className="nav-club">
+            <div className="nav-club-name display">MANCHESTER UNITED</div>
+            <div className="mono-label">DIGITAL ARCHIVE · EST. 1878</div>
+          </div>
+        </div>
+
+        <nav className="nav-center desktop-only">
+          {NAV_ITEMS.map((n) => (
+            <button
+              key={n.id}
+              className={`nav-link ${section === n.id ? 'active' : ''}`}
+              onClick={() => onSelect(n.id)}
+            >
+              <span className="mono-label" style={{ color: 'inherit' }}>{n.label}</span>
+              {section === n.id && (
+                <motion.div layoutId="navUnderline" className="nav-underline" />
+              )}
+            </button>
+          ))}
+        </nav>
+
+        <div className="nav-right">
+          <button className="sound-btn mono-label" onClick={onToggleSound}>
+            SOUND {soundOn ? 'ON' : 'OFF'}
+          </button>
+          <button className="burger mobile-only" onClick={() => setOpen((v) => !v)} aria-label="Menu">
+            <span className={`burger-line ${open ? 'open' : ''}`} />
+          </button>
+        </div>
+      </header>
+
+      {open && (
+        <motion.div
+          className="mobile-menu"
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
+        >
+          {NAV_ITEMS.map((n) => (
+            <button
+              key={n.id}
+              className={`mobile-nav-link display ${section === n.id ? 'active' : ''}`}
+              onClick={() => { onSelect(n.id); setOpen(false); }}
+            >
+              {n.label}
+            </button>
+          ))}
+        </motion.div>
+      )}
+    </>
+  );
+}
+
+/* ====================================================================
+   SEASON SELECTOR
+==================================================================== */
+function SeasonSelector({ active, onChange }) {
+  return (
+    <div className="season-bar">
+      <div className="season-label mono-label">SEASON</div>
+      <div className="season-track">
+        {SEASONS.map((s) => (
+          <button
+            key={s.id}
+            className={`season-chip display ${active === s.id ? 'active' : ''}`}
+            onClick={() => onChange(s.id)}
+          >
+            {s.label}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ====================================================================
+   POSITION FILTER
+==================================================================== */
+const FILTER_ITEMS = ['ALL', 'GK', 'DEF', 'MID', 'FWD'];
+
+function PositionFilter({ active, onChange }) {
+  return (
+    <div className="filter">
+      <div className="mono-label filter-label">POSITION</div>
+      <div className="filter-track">
+        {FILTER_ITEMS.map((f) => (
+          <button
+            key={f}
+            className={`filter-chip ${active === f ? 'active' : ''}`}
+            onClick={() => onChange(f)}
+          >
+            {f}
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ====================================================================
+   SHIRT
+==================================================================== */
+function Shirt({ player, selected, dimmed, onSelect, onHover, index, kitColor = 'home' }) {
+  const isHome = kitColor === 'home';
+
+  return (
+    <motion.div
+      className="shirt-wrap"
+      initial={{ opacity: 0, y: 40, scale: 0.9 }}
+      animate={{
+        opacity: dimmed ? 0.35 : 1,
+        y: 0,
+        scale: selected ? 1.14 : 1
+      }}
+      exit={{ opacity: 0, y: 40, scale: 0.9 }}
+      transition={{
+        duration: 0.5,
+        delay: index * 0.03,
+        ease: [0.22, 1, 0.36, 1]
+      }}
+      onMouseEnter={() => onHover(true)}
+      onMouseLeave={() => onHover(false)}
+      onClick={onSelect}
+    >
+      <motion.div
+        className="shirt-stage"
+        animate={
+          selected
+            ? { y: -14, rotateY: -4, rotateX: 2 }
+            : { y: 0, rotateY: 0, rotateX: 0 }
+        }
+        whileHover={!selected ? { y: -6, rotateY: -3, scale: 1.05 } : undefined}
+        transition={{ duration: 0.4, ease: [0.22, 1, 0.36, 1] }}
+        style={{ transformStyle: 'preserve-3d' }}
+      >
+        <div className="hangar" aria-hidden>
+          <div className="hangar-hook" />
+          <div className="hangar-bar" />
+          <div className="hangar-neck" />
+        </div>
+
+        <div className={`shirt ${isHome ? 'home' : 'away'} ${selected ? 'selected' : ''}`}>
+          <div className="shirt-body">
+            <div className="shirt-num display">{player.number}</div>
+            <div className="shirt-name display">{player.name}</div>
+          </div>
+          <div className="shirt-shoulder" />
+          <div className="shirt-sleeve left" />
+          <div className="shirt-sleeve right" />
+        </div>
+
+        <div className={`shirt-shadow ${selected ? 'strong' : ''}`} aria-hidden />
+        <div className={`shirt-glow ${selected ? 'on' : ''}`} aria-hidden />
+      </motion.div>
+
+      <div className="shirt-tag mono-label">
+        {player.position} · #{player.number}
+      </div>
+    </motion.div>
+  );
+}
+
+/* ====================================================================
+   PLAYER CARD
+==================================================================== */
+function labelPos(p) {
+  switch (p) {
+    case 'GK': return 'Goalkeeper';
+    case 'DEF': return 'Defender';
+    case 'MID': return 'Midfielder';
+    case 'FWD': return 'Forward';
+    default: return p;
+  }
+}
+
+function PlayerCardRow({ label, value }) {
+  return (
+    <div>
+      <div className="mono-label pcard-row-label">{label}</div>
+      <div className="pcard-row-value">{value}</div>
+    </div>
+  );
+}
+
+function PlayerCardStat({ label, value }) {
+  return (
+    <div className="pcard-stat">
+      <div className="mono-label" style={{ marginBottom: 6 }}>{label}</div>
+      <div className="display">{value}</div>
+    </div>
+  );
+}
+
+function PlayerCard({ player, seasonLabel, onClose, onPrev, onNext }) {
+  return (
+    <AnimatePresence>
+      {player && (
+        <motion.aside
+          key={player.id}
+          className="pcard"
+          initial={{ opacity: 0, x: 80, filter: 'blur(12px)' }}
+          animate={{ opacity: 1, x: 0, filter: 'blur(0)' }}
+          exit={{ opacity: 0, x: 80, filter: 'blur(12px)' }}
+          transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
+        >
+          <div className="pcard-inner">
+            <div className="pcard-top">
+              <div className="mono-label">SQUAD SHEET</div>
+              <button className="pcard-close" onClick={onClose} aria-label="Close">✕</button>
+            </div>
+
+            <div className="pcard-season mono-label">
+              MANCHESTER UNITED · {seasonLabel}
+            </div>
+
+            <div className="pcard-hero">
+              <div className="pcard-num display">{player.number}</div>
+              <div>
+                <div className="pcard-pos mono-label">{labelPos(player.position)}</div>
+                <div className="pcard-name display">{player.name}</div>
+                <div className="pcard-fullname">{player.fullName}</div>
+              </div>
+            </div>
+
+            <div className="hair" />
+
+            <div className="pcard-grid">
+              <PlayerCardRow label="CLUB" value="Manchester United" />
+              <PlayerCardRow label="POSITION" value={labelPos(player.position)} />
+              <PlayerCardRow label="DATE OF BIRTH" value={player.birthDate} />
+              <PlayerCardRow label="NATIONALITY" value={player.nationality} />
+              <PlayerCardRow label="HEIGHT" value={player.height} />
+              <PlayerCardRow label="NUMBER" value={`#${player.number}`} />
+            </div>
+
+            <div className="hair" />
+
+            <div className="pcard-stats">
+              <PlayerCardStat label="APPS" value={player.appearances} />
+              <PlayerCardStat label="GOALS" value={player.goals} />
+              <PlayerCardStat label="ASSISTS" value={player.assists} />
+            </div>
+
+            <div className="hair" />
+
+            <div className="pcard-trophies">
+              <div className="mono-label">TROPHIES</div>
+              <div className="pcard-trophies-list">{player.trophies}</div>
+            </div>
+
+            {(onPrev || onNext) && (
+              <div className="pcard-nav">
+                <button className="pcard-nav-btn mono-label" onClick={onPrev} disabled={!onPrev}>
+                  ← PREV
+                </button>
+                <button className="pcard-nav-btn mono-label" onClick={onNext} disabled={!onNext}>
+                  NEXT →
+                </button>
+              </div>
+            )}
+          </div>
+        </motion.aside>
+      )}
+    </AnimatePresence>
+  );
+}
+
+/* ====================================================================
+   LOCKER ROOM
+==================================================================== */
+function LockerRoom({ onHoverSound, onClickSound }) {
+  const [seasonId, setSeasonId] = useState('2025-26');
+  const [filter, setFilter] = useState('ALL');
+  const [selectedId, setSelectedId] = useState(null);
+  const [hoveredId, setHoveredId] = useState(null);
+  const parallax = useParallax(20);
+
+  const season = useMemo(
+    () => SEASONS.find((s) => s.id === seasonId) || SEASONS[0],
+    [seasonId]
+  );
+
+  const filtered = useMemo(() => {
+    if (filter === 'ALL') return season.players;
+    return season.players.filter((p) => p.position === filter);
+  }, [season, filter]);
+
+  const selectedPlayer = useMemo(
+    () => filtered.find((p) => p.id === selectedId) || null,
+    [filtered, selectedId]
+  );
+
+  const selectedIndex = selectedPlayer
+    ? filtered.findIndex((p) => p.id === selectedPlayer.id)
+    : -1;
+
+  const goPrev = selectedIndex > 0
+    ? () => { setSelectedId(filtered[selectedIndex - 1].id); onClickSound(); }
+    : undefined;
+
+  const goNext = selectedIndex >= 0 && selectedIndex < filtered.length - 1
+    ? () => { setSelectedId(filtered[selectedIndex + 1].id); onClickSound(); }
+    : undefined;
+
+  const handleSeason = (id) => { setSeasonId(id); setSelectedId(null); onClickSound(); };
+  const handleFilter = (f) => { setFilter(f); setSelectedId(null); onClickSound(); };
+
+  return (
+    <div className="locker">
+      <div
+        className="locker-bg"
+        style={{ transform: `translate3d(${parallax.x}px, ${parallax.y}px, 0) scale(1.06)` }}
+      >
+        <div className="locker-bg-lights" />
+        <div className="locker-bg-panels" />
+        <div className="locker-bg-dust" />
+      </div>
+
+      <div className="locker-head">
+        <div className="locker-head-left">
+          <div className="mono-label">SQUAD SHEET</div>
+          <h2 className="display locker-title">THE LOCKER ROOM</h2>
+          <div className="locker-head-sub mono-label">
+            SEASON {season.label} · {season.players.length} PLAYERS
+          </div>
+        </div>
+        <div className="locker-head-right mono-label">
+          <span className="live-dot" /> DIGITAL ARCHIVE · LIVE
+        </div>
+      </div>
+
+      <SeasonSelector active={seasonId} onChange={handleSeason} />
+      <PositionFilter active={filter} onChange={handleFilter} />
+
+      <div className="locker-rail-wrap">
+        <div className="rail-metal" aria-hidden>
+          <div className="rail-line" />
+          <div className="rail-line-back" />
+        </div>
+
+        <div className="rail-track">
+          <AnimatePresence mode="popLayout">
+            {filtered.map((p, i) => (
+              <Shirt
+                key={p.id}
+                player={p}
+                index={i}
+                selected={selectedId === p.id}
+                dimmed={!!selectedId && selectedId !== p.id && hoveredId !== p.id}
+                kitColor={p.kit === 'away' ? 'away' : 'home'}
+                onHover={(v) => { if (v) onHoverSound(); setHoveredId(v ? p.id : null); }}
+                onSelect={() => { onClickSound(); setSelectedId(p.id); }}
+              />
+            ))}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      <div className="locker-foot mono-label">
+        <span>EST. 1878 · MANCHESTER</span>
+        <span className="locker-foot-sep" />
+        <span>THEATRE OF DREAMS</span>
+        <span className="locker-foot-sep" />
+        <span>UNOFFICIAL FAN PROJECT</span>
+      </div>
+
+      <PlayerCard
+        player={selectedPlayer}
+        seasonLabel={season.label}
+        onClose={() => setSelectedId(null)}
+        onPrev={goPrev}
+        onNext={goNext}
+      />
+    </div>
+  );
+}
+
+/* ====================================================================
+   LEGENDS
+==================================================================== */
+function Legends({ onHoverSound, onClickSound }) {
+  const [selectedId, setSelectedId] = useState(null);
+  const [hoveredId, setHoveredId] = useState(null);
+  const parallax = useParallax(14);
+  const selected = LEGENDS.find((p) => p.id === selectedId) || null;
+
+  return (
+    <div className="locker">
+      <div
+        className="locker-bg"
+        style={{ transform: `translate3d(${parallax.x}px, ${parallax.y}px, 0) scale(1.06)` }}
+      >
+        <div className="locker-bg-lights" />
+        <div className="locker-bg-panels" />
+      </div>
+
+      <div className="locker-head">
+        <div>
+          <div className="mono-label">HALL OF FAME</div>
+          <h2 className="display locker-title">LEGENDS</h2>
+          <div className="mono-label locker-head-sub">ETERNAL RED DEVILS</div>
+        </div>
+      </div>
+
+      <div className="locker-rail-wrap">
+        <div className="rail-metal">
+          <div className="rail-line" />
+          <div className="rail-line-back" />
+        </div>
+        <div className="rail-track">
+          <AnimatePresence mode="popLayout">
+            {LEGENDS.map((p, i) => (
+              <Shirt
+                key={p.id}
+                player={p}
+                index={i}
+                selected={selectedId === p.id}
+                dimmed={!!selectedId && selectedId !== p.id && hoveredId !== p.id}
+                onHover={(v) => { if (v) onHoverSound(); setHoveredId(v ? p.id : null); }}
+                onSelect={() => { onClickSound(); setSelectedId(p.id); }}
+              />
+            ))}
+          </AnimatePresence>
+        </div>
+      </div>
+
+      <PlayerCard
+        player={selected}
+        seasonLabel="LEGENDS"
+        onClose={() => setSelectedId(null)}
+      />
+    </div>
+  );
+}
+
+/* ====================================================================
+   TROPHY ROOM
+==================================================================== */
+function TrophyRoom() {
+  const [openId, setOpenId] = useState(null);
+
+  return (
+    <div className="trophy">
+      <div className="locker-head">
+        <div>
+          <div className="mono-label">TROPHY ROOM</div>
+          <h2 className="display locker-title">SILVERWARE</h2>
+          <div className="mono-label locker-head-sub">EST. 1878 · MANCHESTER UNITED</div>
+        </div>
+      </div>
+
+      <div className="trophy-grid">
+        {TROPHIES.map((t, i) => (
+          <motion.button
+            key={t.id}
+            className="trophy-card"
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: i * 0.05, ease: [0.22, 1, 0.36, 1] }}
+            whileHover={{ y: -8 }}
+            onClick={() => setOpenId(t.id === openId ? null : t.id)}
+          >
+            <div className="trophy-icon">🏆</div>
+            <div className="trophy-count display">{t.count}</div>
+            <div className="trophy-name">{t.name}</div>
+            <div className="mono-label" style={{ marginTop: 8 }}>LAST · {t.last}</div>
+
+            <AnimatePresence>
+              {openId === t.id && (
+                <motion.div
+                  className="trophy-info"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: 'auto' }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+                >
+                  <div className="hair" style={{ margin: '12px 0' }} />
+                  <p>{t.description}</p>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </motion.button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+/* ====================================================================
+   TIMELINE
+==================================================================== */
+function Timeline() {
+  return (
+    <div className="tl">
+      <div className="locker-head">
+        <div>
+          <div className="mono-label">CLUB HISTORY</div>
+          <h2 className="display locker-title">1878 → TODAY</h2>
+          <div className="mono-label locker-head-sub">A TIMELINE OF MANCHESTER UNITED</div>
+        </div>
+      </div>
+
+      <div className="tl-wrap">
+        <div className="tl-line" />
+        <div className="tl-track">
+          {TIMELINE.map((e, i) => (
+            <motion.div
+              key={e.year}
+              className="tl-item"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: i * 0.06, ease: [0.22, 1, 0.36, 1] }}
+            >
+              <div className="tl-dot" />
+              <div className="tl-year display">{e.year}</div>
+              <div className="tl-title">{e.title}</div>
+              <div className="tl-text">{e.text}</div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ====================================================================
+   FOOTER
+==================================================================== */
+function Footer() {
+  return (
+    <footer className="footer">
+      <div className="footer-inner">
+        <div>
+          <div className="display" style={{ fontSize: 22, letterSpacing: '0.1em' }}>
+            MANCHESTER UNITED
+          </div>
+          <div className="mono-label">DIGITAL ARCHIVE · EST. 1878</div>
+        </div>
+        <div className="footer-right mono-label">
+          Unofficial fan-made project · Not affiliated with Manchester United FC
+        </div>
+      </div>
+    </footer>
+  );
+}
+
+/* ====================================================================
+   APP
+==================================================================== */
+function App() {
+  const [intro, setIntro] = useState(true);
+  const [section, setSection] = useState('locker');
+  const sound = useSound();
+
+  const handleSelect = (s) => {
+    if (s === 'squad' || s === 'locker') setSection('locker');
+    else setSection(s);
+    sound.click();
+  };
+
+  return (
+    <div className="app grain">
+      {intro && <IntroAnimation onDone={() => setIntro(false)} />}
+
+      <Navigation
+        section={section}
+        onSelect={handleSelect}
+        soundOn={sound.enabled}
+        onToggleSound={sound.toggle}
+      />
+
+      {section === 'locker' && (
+        <LockerRoom onHoverSound={sound.hover} onClickSound={sound.click} />
+      )}
+      {section === 'legends' && (
+        <Legends onHoverSound={sound.hover} onClickSound={sound.click} />
+      )}
+      {section === 'trophies' && <TrophyRoom />}
+      {section === 'history' && <Timeline />}
+
+      <Footer />
+    </div>
+  );
+}
+
+createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+</script>
+</body>
+</html>
