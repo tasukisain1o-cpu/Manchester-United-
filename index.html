@@ -527,7 +527,7 @@ function PlayerCard({player,seasonLabel,onClose,onPrev,onNext}){
   <div className="hair"/>
   <div className="pcard-trophies"><div className="mono-label">ТРОФЕИ</div><div className="pcard-trophies-list">{player.trophies}</div></div>
   {(onPrev||onNext)&&<div className="pcard-nav"><button className="pcard-nav-btn mono-label" onClick={onPrev} disabled={!onPrev}>← НАЗАД</button><button className="pcard-nav-btn mono-label" onClick={onNext} disabled={!onNext}>ВПЕРЁД →</button></div>}
- </div></motion.aside></AnimatePresence>;
+ </div></motion.aside></AnimatePresence>);
 }
 
 /* ============ РАЗДЕВАЛКА ============ */
