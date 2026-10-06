@@ -245,7 +245,7 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 </head>
 <body>
 <div id="root"></div>
-<div id="boot-fallback" style="position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:#050505;color:#fff;font:600 12px Inter,system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;opacity:1;transition:opacity .5s">MANCHESTER UNITED · LOADING</div>
+<div id="boot-fallback" style="position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:#050505;color:#fff;font:600 12px Inter,system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;opacity:1;transition:opacity .5s">MANCHESTER UNITED · ЗАГРУЗКА</div>
 <script>
 /* Stable CDN bootstrap: the previous version put JSX inside a native ES module,
    which browsers cannot parse. That caused a silent syntax error and left the
@@ -260,13 +260,13 @@ window.__MU_BOOT_OK__ = false;
 const {useEffect,useMemo,useState}=React;
 const {createRoot}=ReactDOM;
 const {motion,AnimatePresence}=Motion;/* ============ DATA ============ */
-const SEASВКЛS=[
+const SEASONS=[
 {id:'1960s',label:'1960s',year:'1967/68',players:[
 {id:'stepney-68',name:'STEPNEY',fullName:'Alex Stepney',number:1,position:'GK',nationality:'England',birthDate:'18 September 1942',height:'183 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок европейских чемпионов 1968',kit:'home'},
 {id:'dunne-68',name:'DUNNE',fullName:'Tony Dunne',number:3,position:'DEF',nationality:'Ireland',birthDate:'24 July 1941',height:'168 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок европейских чемпионов 1968',kit:'home'},
 {id:'foulkes-68',name:'FOULKES',fullName:'Bill Foulkes',number:5,position:'DEF',nationality:'England',birthDate:'5 January 1932',height:'180 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок европейских чемпионов 1968',kit:'home'},
 {id:'stiles-68',name:'STILES',fullName:'Nobby Stiles',number:6,position:'MID',nationality:'England',birthDate:'18 May 1942',height:'168 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок европейских чемпионов 1968',kit:'home'},
-{id:'charlton-68',name:'CHARLTВКЛ',fullName:'Sir Bobby Charlton',number:9,position:'MID',nationality:'England',birthDate:'11 October 1937',height:'173 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок европейских чемпионов 1968',kit:'home'},
+{id:'charlton-68',name:'CHARLTON',fullName:'Sir Bobby Charlton',number:9,position:'MID',nationality:'England',birthDate:'11 October 1937',height:'173 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок европейских чемпионов 1968',kit:'home'},
 {id:'best-68',name:'BEST',fullName:'George Best',number:7,position:'FWD',nationality:'Northern Ireland',birthDate:'22 May 1946',height:'175 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок европейских чемпионов 1968',kit:'home'},
 {id:'kidd-68',name:'KIDD',fullName:'Brian Kidd',number:10,position:'FWD',nationality:'England',birthDate:'29 May 1949',height:'178 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок европейских чемпионов 1968',kit:'home'},
 {id:'law-68',name:'LAW',fullName:'Denis Law',number:8,position:'FWD',nationality:'Scotland',birthDate:'24 February 1940',height:'175 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок европейских чемпионов 1968',kit:'home'}]},
@@ -274,12 +274,12 @@ const SEASВКЛS=[
 {id:'schmeichel-94',name:'SCHMEICHEL',fullName:'Peter Schmeichel',number:1,position:'GK',nationality:'Denmark',birthDate:'18 November 1963',height:'191 cm',appearances:'40',goals:0,assists:0,trophies:'PL, Кубок Англии',kit:'home'},
 {id:'parker-94',name:'PARKER',fullName:'Paul Parker',number:2,position:'DEF',nationality:'England',birthDate:'4 April 1964',height:'175 cm',appearances:'37',goals:1,assists:'—',trophies:'PL, Кубок Англии',kit:'home'},
 {id:'bruce-94',name:'BRUCE',fullName:'Steve Bruce',number:4,position:'DEF',nationality:'England',birthDate:'31 December 1960',height:'183 cm',appearances:'41',goals:4,assists:'—',trophies:'PL, Кубок Англии',kit:'home'},
-{id:'pallister-94',name:'PВСЕISTER',fullName:'Gary Pallister',number:6,position:'DEF',nationality:'England',birthDate:'30 June 1965',height:'191 cm',appearances:'40',goals:1,assists:'—',trophies:'PL, Кубок Англии',kit:'home'},
+{id:'pallister-94',name:'PALLISTER',fullName:'Gary Pallister',number:6,position:'DEF',nationality:'England',birthDate:'30 June 1965',height:'191 cm',appearances:'40',goals:1,assists:'—',trophies:'PL, Кубок Англии',kit:'home'},
 {id:'irwin-94',name:'IRWIN',fullName:'Denis Irwin',number:3,position:'DEF',nationality:'Ireland',birthDate:'31 October 1965',height:'175 cm',appearances:'42',goals:4,assists:'—',trophies:'PL, Кубок Англии',kit:'home'},
 {id:'keane-94',name:'KEANE',fullName:'Roy Keane',number:16,position:'MID',nationality:'Ireland',birthDate:'10 August 1971',height:'180 cm',appearances:'37',goals:4,assists:'—',trophies:'PL, Кубок Англии',kit:'home'},
 {id:'ince-94',name:'INCE',fullName:'Paul Ince',number:8,position:'MID',nationality:'England',birthDate:'21 October 1967',height:'178 cm',appearances:'39',goals:4,assists:'—',trophies:'PL, Кубок Англии',kit:'home'},
 {id:'giggs-94',name:'GIGGS',fullName:'Ryan Giggs',number:11,position:'MID',nationality:'Wales',birthDate:'29 November 1973',height:'180 cm',appearances:'38',goals:13,assists:'—',trophies:'PL, Кубок Англии',kit:'home'},
-{id:'cantona-94',name:'CANTВКЛA',fullName:'Eric Cantona',number:7,position:'FWD',nationality:'France',birthDate:'24 May 1966',height:'188 cm',appearances:'34',goals:18,assists:'—',trophies:'PL, Кубок Англии',kit:'home'},
+{id:'cantona-94',name:'CANTONA',fullName:'Eric Cantona',number:7,position:'FWD',nationality:'France',birthDate:'24 May 1966',height:'188 cm',appearances:'34',goals:18,assists:'—',trophies:'PL, Кубок Англии',kit:'home'},
 {id:'hughes-94',name:'HUGHES',fullName:'Mark Hughes',number:10,position:'FWD',nationality:'Wales',birthDate:'1 November 1963',height:'178 cm',appearances:'36',goals:12,assists:'—',trophies:'PL, Кубок Англии',kit:'home'},
 {id:'kanchelskis-94',name:'KANCHELSKIS',fullName:'Andrei Kanchelskis',number:14,position:'MID',nationality:'Russia',birthDate:'23 January 1969',height:'178 cm',appearances:'30',goals:6,assists:'—',trophies:'PL, Кубок Англии',kit:'home'}]},
 {id:'1998-99',label:'1998/99',year:'1998/99',players:[
@@ -305,8 +305,8 @@ const SEASВКЛS=[
 {id:'carrick-08',name:'CARRICK',fullName:'Michael Carrick',number:16,position:'MID',nationality:'England',birthDate:'28 July 1981',height:'188 cm',appearances:'49',goals:2,assists:'—',trophies:'PL, UCL 2008',kit:'home'},
 {id:'scholes-08',name:'SCHOLES',fullName:'Paul Scholes',number:18,position:'MID',nationality:'England',birthDate:'16 November 1974',height:'170 cm',appearances:'38',goals:3,assists:'—',trophies:'PL, UCL 2008',kit:'home'},
 {id:'hargreaves-08',name:'HARGREAVES',fullName:'Owen Hargreaves',number:4,position:'MID',nationality:'England',birthDate:'20 January 1981',height:'180 cm',appearances:'34',goals:2,assists:'—',trophies:'PL, UCL 2008',kit:'home'},
-{id:'ronaldo-08',name:'RВКЛALDO',fullName:'Cristiano Ronaldo',number:7,position:'FWD',nationality:'Portugal',birthDate:'5 February 1985',height:'187 cm',appearances:'49',goals:42,assists:'—',trophies:'PL, UCL 2008 · Ballon d’Or',kit:'home'},
-{id:'rooney-08',name:'ROВКЛEY',fullName:'Wayne Rooney',number:10,position:'FWD',nationality:'England',birthDate:'24 October 1985',height:'176 cm',appearances:'43',goals:18,assists:'—',trophies:'PL, UCL 2008',kit:'home'},
+{id:'ronaldo-08',name:'RONALDO',fullName:'Cristiano Ronaldo',number:7,position:'FWD',nationality:'Portugal',birthDate:'5 February 1985',height:'187 cm',appearances:'49',goals:42,assists:'—',trophies:'PL, UCL 2008 · Ballon d’Or',kit:'home'},
+{id:'rooney-08',name:'ROONEY',fullName:'Wayne Rooney',number:10,position:'FWD',nationality:'England',birthDate:'24 October 1985',height:'176 cm',appearances:'43',goals:18,assists:'—',trophies:'PL, UCL 2008',kit:'home'},
 {id:'tevez-08',name:'TEVEZ',fullName:'Carlos Tevez',number:32,position:'FWD',nationality:'Argentina',birthDate:'5 February 1984',height:'173 cm',appearances:'48',goals:19,assists:'—',trophies:'PL, UCL 2008',kit:'home'},
 {id:'giggs-08',name:'GIGGS',fullName:'Ryan Giggs',number:11,position:'MID',nationality:'Wales',birthDate:'29 November 1973',height:'180 cm',appearances:'41',goals:4,assists:'—',trophies:'PL, UCL 2008',kit:'home'},
 {id:'park-08',name:'PARK',fullName:'Park Ji-sung',number:13,position:'MID',nationality:'South Korea',birthDate:'25 February 1981',height:'178 cm',appearances:'40',goals:4,assists:'—',trophies:'PL, UCL 2008',kit:'home'},
@@ -320,8 +320,8 @@ const SEASВКЛS=[
 {id:'carrick-09',name:'CARRICK',fullName:'Michael Carrick',number:16,position:'MID',nationality:'England',birthDate:'28 July 1981',height:'188 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2009',kit:'home'},
 {id:'fletcher-09',name:'FLETCHER',fullName:'Darren Fletcher',number:24,position:'MID',nationality:'Scotland',birthDate:'1 February 1984',height:'183 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2009',kit:'home'},
 {id:'giggs-09',name:'GIGGS',fullName:'Ryan Giggs',number:11,position:'MID',nationality:'Wales',birthDate:'29 November 1973',height:'180 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2009 · PFA POTY',kit:'home'},
-{id:'ronaldo-09',name:'RВКЛALDO',fullName:'Cristiano Ronaldo',number:7,position:'FWD',nationality:'Portugal',birthDate:'5 February 1985',height:'187 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2009 · FIFA POTY',kit:'home'},
-{id:'rooney-09',name:'ROВКЛEY',fullName:'Wayne Rooney',number:10,position:'FWD',nationality:'England',birthDate:'24 October 1985',height:'176 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2009',kit:'home'},
+{id:'ronaldo-09',name:'RONALDO',fullName:'Cristiano Ronaldo',number:7,position:'FWD',nationality:'Portugal',birthDate:'5 February 1985',height:'187 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2009 · FIFA POTY',kit:'home'},
+{id:'rooney-09',name:'ROONEY',fullName:'Wayne Rooney',number:10,position:'FWD',nationality:'England',birthDate:'24 October 1985',height:'176 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2009',kit:'home'},
 {id:'berbatov-09',name:'BERBATOV',fullName:'Dimitar Berbatov',number:9,position:'FWD',nationality:'Bulgaria',birthDate:'30 January 1981',height:'189 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2009',kit:'home'},
 {id:'park-09',name:'PARK',fullName:'Park Ji-sung',number:13,position:'MID',nationality:'South Korea',birthDate:'25 February 1981',height:'178 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2009',kit:'home'},
 {id:'tevez-09',name:'TEVEZ',fullName:'Carlos Tevez',number:32,position:'FWD',nationality:'Argentina',birthDate:'5 February 1984',height:'173 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2009',kit:'home'}]},
@@ -333,7 +333,7 @@ const SEASВКЛS=[
 {id:'evra-13',name:'EVRA',fullName:'Patrice Evra',number:3,position:'DEF',nationality:'France',birthDate:'15 May 1981',height:'175 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2013',kit:'home'},
 {id:'carrick-13',name:'CARRICK',fullName:'Michael Carrick',number:16,position:'MID',nationality:'England',birthDate:'28 July 1981',height:'188 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2013',kit:'home'},
 {id:'giggs-13',name:'GIGGS',fullName:'Ryan Giggs',number:11,position:'MID',nationality:'Wales',birthDate:'29 November 1973',height:'180 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2013',kit:'home'},
-{id:'rooney-13',name:'ROВКЛEY',fullName:'Wayne Rooney',number:10,position:'FWD',nationality:'England',birthDate:'24 October 1985',height:'176 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2013',kit:'home'},
+{id:'rooney-13',name:'ROONEY',fullName:'Wayne Rooney',number:10,position:'FWD',nationality:'England',birthDate:'24 October 1985',height:'176 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2013',kit:'home'},
 {id:'kagawa-13',name:'KAGAWA',fullName:'Shinji Kagawa',number:26,position:'MID',nationality:'Japan',birthDate:'17 March 1989',height:'175 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2013',kit:'home'},
 {id:'rvp-13',name:'VAN PERSIE',fullName:'Robin van Persie',number:20,position:'FWD',nationality:'Netherlands',birthDate:'6 August 1983',height:'188 cm',appearances:'—',goals:26,assists:'—',trophies:'PL 2013 · Golden Boot',kit:'home'},
 {id:'chicharito-13',name:'HERNANDEZ',fullName:'Javier Hernández',number:14,position:'FWD',nationality:'Mexico',birthDate:'1 June 1988',height:'175 cm',appearances:'—',goals:'—',assists:'—',trophies:'PL 2013',kit:'home'},
@@ -366,7 +366,7 @@ const SEASВКЛS=[
 {id:'greenwood-21',name:'GREENWOOD',fullName:'Mason Greenwood',number:11,position:'FWD',nationality:'England',birthDate:'1 October 2001',height:'181 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'},
 {id:'cavani-21',name:'CAVANI',fullName:'Edinson Cavani',number:7,position:'FWD',nationality:'Uruguay',birthDate:'14 February 1987',height:'184 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'}]},
 {id:'2023-24',label:'2023/24',year:'2023/24',players:[
-{id:'onana-24',name:'ВКЛANA',fullName:'André Onana',number:24,position:'GK',nationality:'Cameroon',birthDate:'2 April 1996',height:'190 cm',appearances:'—',goals:0,assists:0,trophies:'Кубок Англии 2024',kit:'home'},
+{id:'onana-24',name:'ONANA',fullName:'André Onana',number:24,position:'GK',nationality:'Cameroon',birthDate:'2 April 1996',height:'190 cm',appearances:'—',goals:0,assists:0,trophies:'Кубок Англии 2024',kit:'home'},
 {id:'dalot-24',name:'DALOT',fullName:'Diogo Dalot',number:20,position:'DEF',nationality:'Portugal',birthDate:'18 March 1999',height:'183 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок Англии 2024',kit:'home'},
 {id:'varane-24',name:'VARANE',fullName:'Raphaël Varane',number:19,position:'DEF',nationality:'France',birthDate:'25 April 1993',height:'191 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок Англии 2024',kit:'home'},
 {id:'martinez-24',name:'MARTÍNEZ',fullName:'Lisandro Martínez',number:6,position:'DEF',nationality:'Argentina',birthDate:'18 January 1998',height:'175 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок Англии 2024',kit:'home'},
@@ -378,7 +378,7 @@ const SEASВКЛS=[
 {id:'rashford-24',name:'RASHFORD',fullName:'Marcus Rashford',number:10,position:'FWD',nationality:'England',birthDate:'31 October 1997',height:'180 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок Англии 2024',kit:'home'},
 {id:'hojlund-24',name:'HØJLUND',fullName:'Rasmus Højlund',number:11,position:'FWD',nationality:'Denmark',birthDate:'4 February 2003',height:'191 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок Англии 2024',kit:'home'}]},
 {id:'2025-26',label:'2025/26',year:'2025/26',players:[
-{id:'onana-26',name:'ВКЛANA',fullName:'André Onana',number:24,position:'GK',nationality:'Cameroon',birthDate:'2 April 1996',height:'190 cm',appearances:'—',goals:0,assists:0,trophies:'—',kit:'home'},
+{id:'onana-26',name:'ONANA',fullName:'André Onana',number:24,position:'GK',nationality:'Cameroon',birthDate:'2 April 1996',height:'190 cm',appearances:'—',goals:0,assists:0,trophies:'—',kit:'home'},
 {id:'dalot-26',name:'DALOT',fullName:'Diogo Dalot',number:20,position:'DEF',nationality:'Portugal',birthDate:'18 March 1999',height:'183 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'},
 {id:'yoro-26',name:'YORO',fullName:'Leny Yoro',number:15,position:'DEF',nationality:'France',birthDate:'13 November 2005',height:'190 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'},
 {id:'martinez-26',name:'MARTÍNEZ',fullName:'Lisandro Martínez',number:6,position:'DEF',nationality:'Argentina',birthDate:'18 January 1998',height:'175 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'},
@@ -387,20 +387,20 @@ const SEASВКЛS=[
 {id:'mainoo-26',name:'MAINOO',fullName:'Kobbie Mainoo',number:37,position:'MID',nationality:'England',birthDate:'19 April 2005',height:'175 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'},
 {id:'bruno-26',name:'FERNANDES',fullName:'Bruno Fernandes',number:8,position:'MID',nationality:'Portugal',birthDate:'8 September 1994',height:'179 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'},
 {id:'garnacho-26',name:'GARNACHO',fullName:'Alejandro Garnacho',number:17,position:'FWD',nationality:'Argentina',birthDate:'1 July 2004',height:'180 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'},
-{id:'amad-26',name:'DIВСЕO',fullName:'Amad Diallo',number:16,position:'FWD',nationality:'Ivory Coast',birthDate:'11 July 2002',height:'175 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'},
+{id:'amad-26',name:'DIALLO',fullName:'Amad Diallo',number:16,position:'FWD',nationality:'Ivory Coast',birthDate:'11 July 2002',height:'175 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'},
 {id:'hojlund-26',name:'HØJLUND',fullName:'Rasmus Højlund',number:9,position:'FWD',nationality:'Denmark',birthDate:'4 February 2003',height:'191 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'},
 {id:'mount-26',name:'MOUNT',fullName:'Mason Mount',number:7,position:'MID',nationality:'England',birthDate:'10 January 1999',height:'178 cm',appearances:'—',goals:'—',assists:'—',trophies:'—',kit:'home'}]}];
 
 const ЛЕГЕНДЫ=[
 {id:'best',name:'BEST',fullName:'George Best',number:7,position:'FWD',nationality:'Northern Ireland',birthDate:'22 May 1946',height:'175 cm',appearances:470,goals:179,assists:'—',trophies:'Кубок европейских чемпионов 1968 · Ballon d’Or 1968',kit:'home'},
-{id:'charlton',name:'CHARLTВКЛ',fullName:'Sir Bobby Charlton',number:9,position:'MID',nationality:'England',birthDate:'11 October 1937',height:'173 cm',appearances:758,goals:249,assists:'—',trophies:'Кубок европейских чемпионов 1968 · Ballon d’Or 1966',kit:'home'},
-{id:'cantona',name:'CANTВКЛA',fullName:'Eric Cantona',number:7,position:'FWD',nationality:'France',birthDate:'24 May 1966',height:'188 cm',appearances:185,goals:82,assists:'—',trophies:'4× PL, 2× Кубок Англии',kit:'home'},
+{id:'charlton',name:'CHARLTON',fullName:'Sir Bobby Charlton',number:9,position:'MID',nationality:'England',birthDate:'11 October 1937',height:'173 cm',appearances:758,goals:249,assists:'—',trophies:'Кубок европейских чемпионов 1968 · Ballon d’Or 1966',kit:'home'},
+{id:'cantona',name:'CANTONA',fullName:'Eric Cantona',number:7,position:'FWD',nationality:'France',birthDate:'24 May 1966',height:'188 cm',appearances:185,goals:82,assists:'—',trophies:'4× PL, 2× Кубок Англии',kit:'home'},
 {id:'beckham',name:'BECKHAM',fullName:'David Beckham',number:7,position:'MID',nationality:'England',birthDate:'2 May 1975',height:'183 cm',appearances:394,goals:85,assists:'—',trophies:'6× PL, UCL 1999, Treble',kit:'home'},
 {id:'keane',name:'KEANE',fullName:'Roy Keane',number:16,position:'MID',nationality:'Ireland',birthDate:'10 August 1971',height:'180 cm',appearances:480,goals:51,assists:'—',trophies:'7× PL, UCL 1999, Treble',kit:'home'},
 {id:'scholes',name:'SCHOLES',fullName:'Paul Scholes',number:18,position:'MID',nationality:'England',birthDate:'16 November 1974',height:'170 cm',appearances:718,goals:155,assists:'—',trophies:'11× PL, 2× UCL',kit:'home'},
 {id:'giggs',name:'GIGGS',fullName:'Ryan Giggs',number:11,position:'MID',nationality:'Wales',birthDate:'29 November 1973',height:'180 cm',appearances:963,goals:168,assists:'—',trophies:'13× PL, 2× UCL',kit:'home'},
-{id:'rooney',name:'ROВКЛEY',fullName:'Wayne Rooney',number:10,position:'FWD',nationality:'England',birthDate:'24 October 1985',height:'176 cm',appearances:559,goals:253,assists:145,trophies:'5× PL, UCL 2008',kit:'home'},
-{id:'ronaldo',name:'RВКЛALDO',fullName:'Cristiano Ronaldo',number:7,position:'FWD',nationality:'Portugal',birthDate:'5 February 1985',height:'187 cm',appearances:346,goals:145,assists:65,trophies:'3× PL, UCL 2008, Ballon d’Or 2008',kit:'home'},
+{id:'rooney',name:'ROONEY',fullName:'Wayne Rooney',number:10,position:'FWD',nationality:'England',birthDate:'24 October 1985',height:'176 cm',appearances:559,goals:253,assists:145,trophies:'5× PL, UCL 2008',kit:'home'},
+{id:'ronaldo',name:'RONALDO',fullName:'Cristiano Ronaldo',number:7,position:'FWD',nationality:'Portugal',birthDate:'5 February 1985',height:'187 cm',appearances:346,goals:145,assists:65,trophies:'3× PL, UCL 2008, Ballon d’Or 2008',kit:'home'},
 {id:'ferdinand',name:'FERDINAND',fullName:'Rio Ferdinand',number:5,position:'DEF',nationality:'England',birthDate:'7 November 1978',height:'189 cm',appearances:455,goals:8,assists:'—',trophies:'6× PL, UCL 2008',kit:'home'},
 {id:'vidic',name:'VIDIC',fullName:'Nemanja Vidić',number:15,position:'DEF',nationality:'Serbia',birthDate:'21 October 1981',height:'188 cm',appearances:300,goals:21,assists:'—',trophies:'5× PL, UCL 2008',kit:'home'},
 {id:'schmeichel',name:'SCHMEICHEL',fullName:'Peter Schmeichel',number:1,position:'GK',nationality:'Denmark',birthDate:'18 November 1963',height:'191 cm',appearances:398,goals:1,assists:'—',trophies:'5× PL, UCL 1999, Treble',kit:'home'},
@@ -450,10 +450,10 @@ function Navigation({section,onSelect,soundOn,onToggleSound}){const[open,setOpen
 {open&&<motion.div className="mobile-menu" initial={{opacity:0,y:-20}} animate={{opacity:1,y:0}} transition={{duration:.3,ease:[.22,1,.36,1]}}>{NAV_ITEMS.map(n=>(<button key={n.id} className={`mobile-nav-link display ${section===n.id?'active':''}`} onClick={()=>{onSelect(n.id);setOpen(false);}}>{n.label}</button>))}</motion.div>}
 </>);}
 
-/* ============ SEASВКЛ + FILTER ============ */
-function SeasonSelector({active,onChange}){return(<div className="season-bar"><div className="season-label mono-label">SEASВКЛ</div><div className="season-track">{SEASВКЛS.map(s=>(<button key={s.id} className={`season-chip display ${active===s.id?'active':''}`} onClick={()=>onChange(s.id)}>{s.label}</button>))}</div></div>);}
+/* ============ СЕЗОНЫ + FILTER ============ */
+function SeasonSelector({active,onChange}){return(<div className="season-bar"><div className="season-label mono-label">СЕЗОНЫ</div><div className="season-track">{SEASONS.map(s=>(<button key={s.id} className={`season-chip display ${active===s.id?'active':''}`} onClick={()=>onChange(s.id)}>{s.label}</button>))}</div></div>);}
 const FILTER_ITEMS=['ВСЕ','GK','DEF','MID','FWD'];
-function PositionFilter({active,onChange}){return(<div className="filter"><div className="mono-label filter-label">POSITIВКЛ</div><div className="filter-track">{FILTER_ITEMS.map(f=>(<button key={f} className={`filter-chip ${active===f?'active':''}`} onClick={()=>onChange(f)}>{f}</button>))}</div></div>);}
+function PositionFilter({active,onChange}){return(<div className="filter"><div className="mono-label filter-label">POSITION</div><div className="filter-track">{FILTER_ITEMS.map(f=>(<button key={f} className={`filter-chip ${active===f?'active':''}`} onClick={()=>onChange(f)}>{f}</button>))}</div></div>);}
 
 /* ============ SHIRT ============ */
 function Shirt({player,selected,dimmed,onSelect,onHover,index,kitColor='home'}){const isHome=kitColor==='home';return(
@@ -512,13 +512,13 @@ function PlayerCard({player,seasonLabel,onClose,onPrev,onNext}){
       <div className="pcard-back-name display">{player.name}</div>
       <div className="mono-label" style={{marginTop:5}}>{labelPos(player.position)} · #{player.number}</div>
       <div className="pcard-back-grid"><div className="pcard-back-stat"><div className="display">{player.appearances}</div><div className="mono-label">APPEARANCES</div></div><div className="pcard-back-stat"><div className="display">{player.goals}</div><div className="mono-label">ГОЛЫ</div></div><div className="pcard-back-stat"><div className="display">{player.assists}</div><div className="mono-label">ГОЛЕВЫЕ ПЕРЕДАЧИ</div></div><div className="pcard-back-stat"><div className="display">{player.height}</div><div className="mono-label">РОСТ</div></div></div>
-      <div className="pcard-back-trophies"><div className="mono-label" style={{marginBottom:5}}>HВКЛOURS</div>{player.trophies}</div>
+      <div className="pcard-back-trophies"><div className="mono-label" style={{marginBottom:5}}>HONOURS</div>{player.trophies}</div>
       <div className="pcard-flip-hint" style={{marginTop:16}}>ВЕРНУТЬ ФОТО</div>
     </div>
    </div>
   </div>
   <div className="pcard-actions"><button className="pcard-action primary" onClick={flip}>{flipped?'ПОКАЗАТЬ ФОТО':'ПОКАЗАТЬ СТАТИСТИКУ'}</button><button className="pcard-action" onClick={onClose}>ЗАКРЫТЬ</button></div>
-  <div className="pcard-grid"><Row label="ДАТА РОЖДЕНИЯ" value={player.birthDate}/><Row label="NATIВКЛALITY" value={player.nationality}/><Row label="РОСТ" value={player.height}/><Row label="НОМЕР" value={`#${player.number}`}/></div>
+  <div className="pcard-grid"><Row label="ДАТА РОЖДЕНИЯ" value={player.birthDate}/><Row label="NATIONALITY" value={player.nationality}/><Row label="РОСТ" value={player.height}/><Row label="НОМЕР" value={`#${player.number}`}/></div>
   <div className="pcard-stats"><Stat label="МАТЧИ" value={player.appearances}/><Stat label="ГОЛЫ" value={player.goals}/><Stat label="ГОЛЕВЫЕ ПЕРЕДАЧИ" value={player.assists}/></div>
   <div className="hair"/>
   <div className="pcard-trophies"><div className="mono-label">ТРОФЕИ</div><div className="pcard-trophies-list">{player.trophies}</div></div>
@@ -533,7 +533,7 @@ const[filter,setFilter]=useState('ВСЕ');
 const[selectedId,setSelectedId]=useState(null);
 const[hoveredId,setHoveredId]=useState(null);
 const parallax=useParallax(20);
-const season=useMemo(()=>SEASВКЛS.find(s=>s.id===seasonId)||SEASВКЛS[0],[seasonId]);
+const season=useMemo(()=>SEASONS.find(s=>s.id===seasonId)||SEASONS[0],[seasonId]);
 const filtered=useMemo(()=>filter==='ВСЕ'?season.players:season.players.filter(p=>p.position===filter),[season,filter]);
 const selectedPlayer=useMemo(()=>filtered.find(p=>p.id===selectedId)||null,[filtered,selectedId]);
 const idx=selectedPlayer?filtered.findIndex(p=>p.id===selectedPlayer.id):-1;
@@ -544,7 +544,7 @@ const handleFilter=(f)=>{setFilter(f);setSelectedId(null);onClickSound();};
 return(<div className="locker">
 <div className="locker-bg" style={{transform:`translate3d(${parallax.x}px,${parallax.y}px,0) scale(1.06)`}}><div className="locker-bg-lights"/><div className="locker-bg-panels"/><div className="locker-bg-dust"/></div>
 <div className="locker-head">
-<div><div className="mono-label">СОСТАВ SHEET</div><h2 className="display locker-title">THE РАЗДЕВАЛКА</h2><div className="locker-head-sub mono-label">SEASВКЛ {season.label} · {season.players.length} PLAYERS</div></div>
+<div><div className="mono-label">СОСТАВ SHEET</div><h2 className="display locker-title">THE РАЗДЕВАЛКА</h2><div className="locker-head-sub mono-label">СЕЗОНЫ {season.label} · {season.players.length} PLAYERS</div></div>
 <div className="locker-head-right mono-label"><span className="live-dot"/> ЦИФРОВОЙ АРХИВ · LIVE</div>
 </div>
 <SeasonSelector active={seasonId} onChange={handleSeason}/>
@@ -553,7 +553,7 @@ return(<div className="locker">
 <div className="rail-metal"><div className="rail-line"/><div className="rail-line-back"/></div>
 <div className="rail-track"><AnimatePresence mode="popLayout">{filtered.map((p,i)=>(<Shirt key={p.id} player={p} index={i} selected={selectedId===p.id} dimmed={!!selectedId&&selectedId!==p.id&&hoveredId!==p.id} kitColor={p.kit==='away'?'away':'home'} onHover={(v)=>{if(v)onHoverSound();setHoveredId(v?p.id:null);}} onSelect={()=>{onClickSound();setSelectedId(p.id);}}/>))}</AnimatePresence></div>
 </div>
-<div className="locker-foot mono-label"><span>ОСНОВАН · 1878 · МАНЧЕСТЕР</span><span className="locker-foot-sep"/><span>ТЕАТР МЕЧТЫ</span><span className="locker-foot-sep"/><span>UNВЫКЛICIAL FAN PROJECT</span></div>
+<div className="locker-foot mono-label"><span>ОСНОВАН · 1878 · МАНЧЕСТЕР</span><span className="locker-foot-sep"/><span>ТЕАТР МЕЧТЫ</span><span className="locker-foot-sep"/><span>UNOFFICIAL FAN PROJECT</span></div>
 <PlayerCard player={selectedPlayer} seasonLabel={season.label} onClose={()=>setSelectedId(null)} onPrev={goPrev} onNext={goNext}/>
 </div>);}
 
@@ -565,7 +565,7 @@ const parallax=useParallax(14);
 const selected=ЛЕГЕНДЫ.find(p=>p.id===selectedId)||null;
 return(<div className="locker">
 <div className="locker-bg" style={{transform:`translate3d(${parallax.x}px,${parallax.y}px,0) scale(1.06)`}}><div className="locker-bg-lights"/><div className="locker-bg-panels"/></div>
-<div className="locker-head"><div><div className="mono-label">HВСЕ OF FAME</div><h2 className="display locker-title">ЛЕГЕНДЫ</h2><div className="mono-label locker-head-sub">ВЕЧНЫЕ КРАСНЫЕ ДЬЯВОЛЫ</div></div></div>
+<div className="locker-head"><div><div className="mono-label">HALL OF FAME</div><h2 className="display locker-title">ЛЕГЕНДЫ</h2><div className="mono-label locker-head-sub">ВЕЧНЫЕ КРАСНЫЕ ДЬЯВОЛЫ</div></div></div>
 <div className="locker-rail-wrap">
 <div className="rail-metal"><div className="rail-line"/><div className="rail-line-back"/></div>
 <div className="rail-track"><AnimatePresence mode="popLayout">{ЛЕГЕНДЫ.map((p,i)=>(<Shirt key={p.id} player={p} index={i} selected={selectedId===p.id} dimmed={!!selectedId&&selectedId!==p.id&&hoveredId!==p.id} onHover={(v)=>{if(v)onHoverSound();setHoveredId(v?p.id:null);}} onSelect={()=>{onClickSound();setSelectedId(p.id);}}/>))}</AnimatePresence></div>
@@ -576,8 +576,8 @@ return(<div className="locker">
 /* ============ МАТЧДЕЙ ============ */
 function Matchday(){
 const lineup=[
-['ВКЛANA',24,78,88],['DALOT',20,22,72],['YORO',15,42,74],['MARTÍNEZ',6,58,74],['SHAW',23,78,72],
-['UGARTE',25,34,51],['MAINOO',37,66,51],['FERNANDES',8,50,39],['GARNACHO',17,22,23],['HØJLUND',9,50,20],['DIВСЕO',16,78,23]
+['ONANA',24,78,88],['DALOT',20,22,72],['YORO',15,42,74],['MARTÍNEZ',6,58,74],['SHAW',23,78,72],
+['UGARTE',25,34,51],['MAINOO',37,66,51],['FERNANDES',8,50,39],['GARNACHO',17,22,23],['HØJLUND',9,50,20],['DIALLO',16,78,23]
 ];
 return(<div className="matchday">
 <div className="matchday-bg"/><div className="matchday-lights"/><div className="matchday-tunnel"/>
@@ -589,7 +589,7 @@ return(<div className="matchday">
 <div className="matchday-grid">
 <div className="matchday-side"><div className="mono-label">ТОННЕЛЬ</div><h3>ВЫХОДИМ В КРАСНОМ</h3><p>Прожекторы включены. Футболки готовы. Команда выходит из тоннеля, а стадион просыпается и начинает гудеть.</p><div className="mono-label" style={{marginTop:18}}>ОЛД ТРАФФОРД · 20:00</div></div>
 <div className="matchday-pitch">{lineup.map(([name,num,x,y])=><div key={name} className="formation-player" style={{left:x+'%',top:y+'%'}}><div className="formation-shirt">{num}</div><div className="formation-name">{name}</div></div>)}<div className="matchday-label mono-label">СТАРТОВЫЙ СОСТАВ · 4—3—3</div></div>
-<div className="matchday-side"><div className="mono-label">КАПИТАН</div><h3>BRUNO · #8</h3><p>Одна капитанская повязка. Один стадион. Одна красная футболка. Нажми на игрока в раздевалке, чтобы открыть полное досье и его фотографию.</p><div className="mono-label" style={{marginTop:18}}>READY FOR KICK-ВЫКЛ</div></div>
+<div className="matchday-side"><div className="mono-label">КАПИТАН</div><h3>BRUNO · #8</h3><p>Одна капитанская повязка. Один стадион. Одна красная футболка. Нажми на игрока в раздевалке, чтобы открыть полное досье и его фотографию.</p><div className="mono-label" style={{marginTop:18}}>READY FOR KICK-OFF</div></div>
 </div>
 <div className="matchday-cta"><span className="matchday-pulse"/> ПОЧУВСТВУЙ ШУМ · GGMU</div>
 </div></div>);
@@ -610,16 +610,16 @@ function Timeline(){return(<div className="tl">
 <div className="tl-wrap"><div className="tl-line"/><div className="tl-track">{TIMELINE.map((e,i)=>(<motion.div key={e.year} className="tl-item" initial={{opacity:0,y:30}} animate={{opacity:1,y:0}} transition={{duration:.5,delay:i*.06,ease:[.22,1,.36,1]}}><div className="tl-dot"/><div className="tl-year display">{e.year}</div><div className="tl-title">{e.title}</div><div className="tl-text">{e.text}</div></motion.div>))}</div></div>
 </div>);}
 
-/* ============ ICВКЛIC ЛЕГЕНДАРНЫЕ МОМЕНТЫ ============ */
-const ICВКЛIC_ЛЕГЕНДАРНЫЕ МОМЕНТЫ=[
-{id:'treble-99',year:'1999',title:'ТРЕБЛ 1999',kicker:'BARCELВКЛA · 26 MAY 1999',text:'Три трофея. Одна незабываемая ночь. Manchester United оформил исторический требл в невероятной развязке.',tag:'НАСЛЕДИЕ',image:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Manchester_United_1998-99.jpg/640px-Manchester_United_1998-99.jpg'},
+/* ============ ЛЕГЕНДАРНЫЕ МОМЕНТЫ ============ */
+const ICONIC_MOMENTS=[
+{id:'treble-99',year:'1999',title:'ТРЕБЛ 1999',kicker:'BARCELONA · 26 MAY 1999',text:'Три трофея. Одна незабываемая ночь. Manchester United оформил исторический требл в невероятной развязке.',tag:'НАСЛЕДИЕ',image:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Manchester_United_1998-99.jpg/640px-Manchester_United_1998-99.jpg'},
 {id:'moscow-08',year:'2008',title:'МОСКВА',kicker:'ЛУЖНИКИ · 21 МАЯ 2008',text:'A European night under the rain. United lifted the Кубок европейских чемпионов after a legendary penalty shootout.',tag:'ЕВРОПА',image:'https://upload.wikimedia.org/wikipedia/commons/thumb/4/46/Manchester_United_2008.jpg/640px-Manchester_United_2008.jpg'},
-{id:'fergie-13',year:'2013',title:"FERGUSВКЛ'S LAST",kicker:'ОЛД ТРАФФОРД · 2013',text:'Последний чемпионский титул эпохи Фергюсона. Глава истории, которая определила целое поколение Manchester United.',tag:'БОСС',image:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Alex_Ferguson_2011.jpg/640px-Alex_Ferguson_2011.jpg'},
+{id:'fergie-13',year:'2013',title:"FERGUSON'S LAST",kicker:'ОЛД ТРАФФОРД · 2013',text:'Последний чемпионский титул эпохи Фергюсона. Глава истории, которая определила целое поколение Manchester United.',tag:'БОСС',image:'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2d/Alex_Ferguson_2011.jpg/640px-Alex_Ferguson_2011.jpg'},
 {id:'cantona-96',year:'1996',title:'КОРОЛЬ ЭРИК',kicker:'УЭМБЛИ · 1996',text:'The iconic collar. The iconic number 7. Cantona returned and United reclaimed the Кубок Англии.',tag:'КОРОЛЬ',image:'https://upload.wikimedia.org/wikipedia/commons/thumb/6/63/Eric_Cantona_2011.jpg/640px-Eric_Cantona_2011.jpg'}
 ];
 function Moments(){const[selected,setSelected]=useState(null);return(<div className="moments-page">
-<div className="locker-head"><div><div className="mono-label">КРАСНЫЙ АРХИВ</div><h2 className="display locker-title">ICВКЛIC ЛЕГЕНДАРНЫЕ МОМЕНТЫ</h2><div className="mono-label locker-head-sub">ЧЕТЫРЕ НОЧИ, КОТОРЫЕ ОСТАЛИСЬ В ВЕЧНОСТИ</div></div><div className="locker-head-right mono-label"><span className="live-dot"/> РЕЖИМ АРХИВА</div></div>
-<div className="moments-grid">{ICВКЛIC_ЛЕГЕНДАРНЫЕ МОМЕНТЫ.map((m,i)=><motion.button key={m.id} className="moment-card" initial={{opacity:0,y:35}} animate={{opacity:1,y:0}} transition={{duration:.6,delay:i*.08,ease:[.22,1,.36,1]}} whileHover={{y:-10,scale:1.01}} onClick={()=>setSelected(m)}>
+<div className="locker-head"><div><div className="mono-label">КРАСНЫЙ АРХИВ</div><h2 className="display locker-title">ЛЕГЕНДАРНЫЕ МОМЕНТЫ</h2><div className="mono-label locker-head-sub">ЧЕТЫРЕ НОЧИ, КОТОРЫЕ ОСТАЛИСЬ В ВЕЧНОСТИ</div></div><div className="locker-head-right mono-label"><span className="live-dot"/> РЕЖИМ АРХИВА</div></div>
+<div className="moments-grid">{ICONIC_MOMENTS.map((m,i)=><motion.button key={m.id} className="moment-card" initial={{opacity:0,y:35}} animate={{opacity:1,y:0}} transition={{duration:.6,delay:i*.08,ease:[.22,1,.36,1]}} whileHover={{y:-10,scale:1.01}} onClick={()=>setSelected(m)}>
 <div className="moment-image" style={{backgroundImage:`linear-gradient(180deg,transparent 35%,rgba(0,0,0,.92)),url("${m.image}")`}}><div className="moment-year display">{m.year}</div><div className="moment-tag mono-label">{m.tag}</div></div>
 <div className="moment-copy"><div className="mono-label">{m.kicker}</div><h3 className="display">{m.title}</h3><p>{m.text}</p><span className="moment-open mono-label">ОТКРЫТЬ МОМЕНТ →</span></div>
 </motion.button>)}</div>
@@ -661,6 +661,7 @@ return(<div className="app grain">
 {section==='trophies'&&<TrophyRoom/>}
 {section==='history'&&<Timeline/>}
 {section==='moments'&&<Moments/>}
+{section==='quiz'&&<RedIQ/>}
 <Footer/>
 </div>);}
 
@@ -668,6 +669,6 @@ createRoot(document.getElementById('root')).render(<React.StrictMode><App/></Rea
 requestAnimationFrame(()=>{const f=document.getElementById('boot-fallback');if(f){f.style.opacity='0';setTimeout(()=>f.remove(),600);}});
 window.__MU_BOOT_OK__=true;
 </script>
-<script>setTimeout(()=>{if(!window.__MU_BOOT_OK__){const f=document.getElementById('boot-fallback');if(f){f.innerHTML='PLEASE RELOAD · CВКЛNECTIВКЛ REQUIRED';f.style.opacity='1';}}},7000);</script>
+<script>setTimeout(()=>{if(!window.__MU_BOOT_OK__){const f=document.getElementById('boot-fallback');if(f){f.innerHTML='ОБНОВИ СТРАНИЦУ · НЕ УДАЛОСЬ ЗАПУСТИТЬ JAVASCRIPT';f.style.opacity='1';}}},7000);</script>
 </body>
 </html>
