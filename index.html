@@ -158,13 +158,21 @@ button{font-family:inherit;color:inherit;background:none;border:none;cursor:poin
 </head>
 <body>
 <div id="root"></div>
-<script type="importmap">
-{"imports":{"react":"https://esm.sh/react@18.3.1","react-dom":"https://esm.sh/react-dom@18.3.1","react-dom/client":"https://esm.sh/react-dom@18.3.1/client","framer-motion":"https://esm.sh/framer-motion@11.3.19?external=react,react-dom"}}
+<div id="boot-fallback" style="position:fixed;inset:0;z-index:99999;display:grid;place-items:center;background:#050505;color:#fff;font:600 12px Inter,system-ui,sans-serif;letter-spacing:.22em;text-transform:uppercase;opacity:1;transition:opacity .5s">MANCHESTER UNITED · LOADING</div>
+<script>
+/* Stable CDN bootstrap: the previous version put JSX inside a native ES module,
+   which browsers cannot parse. That caused a silent syntax error and left the
+   full-screen intro black. */
+window.__MU_BOOT_OK__ = false;
 </script>
-<script type="module">
-import React,{useEffect,useMemo,useState} from 'react';
-import {createRoot} from 'react-dom/client';
-import {motion,AnimatePresence} from 'framer-motion';/* ============ DATA ============ */
+<script crossorigin src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/framer-motion@11.3.19/dist/framer-motion.js"></script>
+<script src="https://unpkg.com/@babel/standalone@7.26.10/babel.min.js"></script>
+<script type="text/babel" data-presets="react">
+const {useEffect,useMemo,useState}=React;
+const {createRoot}=ReactDOM;
+const {motion,AnimatePresence}=Motion;/* ============ DATA ============ */
 const SEASONS=[
 {id:'1960s',label:'1960s',year:'1967/68',players:[
 {id:'stepney-68',name:'STEPNEY',fullName:'Alex Stepney',number:1,position:'GK',nationality:'England',birthDate:'18 September 1942',height:'183 cm',appearances:'—',goals:'—',assists:'—',trophies:'European Cup 1968',kit:'home'},
@@ -341,6 +349,7 @@ return(<AnimatePresence>{!gone&&(<motion.div className="intro" initial={{opacity
 {step===0&&<motion.h1 key="a" className="intro-title" style={{fontFamily:'var(--font-display)'}} initial={{opacity:0,y:24,filter:'blur(12px)'}} animate={{opacity:1,y:0,filter:'blur(0)'}} exit={{opacity:0,y:-20,filter:'blur(10px)'}} transition={{duration:.8,ease:[.22,1,.36,1]}}>MANCHESTER UNITED</motion.h1>}
 {step===1&&<motion.h2 key="b" className="intro-title" style={{fontFamily:'var(--font-display)'}} initial={{opacity:0,y:24,filter:'blur(12px)'}} animate={{opacity:1,y:0,filter:'blur(0)'}} exit={{opacity:0,y:-20,filter:'blur(10px)'}} transition={{duration:.7,ease:[.22,1,.36,1]}}>THE RED DEVILS</motion.h2>}
 {step===2&&<motion.h3 key="c" className="intro-title" style={{fontFamily:'var(--font-display)'}} initial={{opacity:0,y:24,filter:'blur(12px)'}} animate={{opacity:1,y:0,filter:'blur(0)'}} exit={{opacity:0,y:-20,filter:'blur(10px)'}} transition={{duration:.7,ease:[.22,1,.36,1]}}>DIGITAL LOCKER ROOM</motion.h3>}
+{step===3&&<motion.h3 key="d" className="intro-title" style={{fontFamily:'var(--font-display)'}} initial={{opacity:0,y:24,filter:'blur(12px)'}} animate={{opacity:1,y:0,filter:'blur(0)'}} transition={{duration:.6,ease:[.22,1,.36,1]}}>EST. 1878</motion.h3>}
 </AnimatePresence></div></motion.div>)}</AnimatePresence>);}
 
 /* ============ NAV ============ */
@@ -467,6 +476,9 @@ return(<div className="app grain">
 </div>);}
 
 createRoot(document.getElementById('root')).render(<React.StrictMode><App/></React.StrictMode>);
+requestAnimationFrame(()=>{const f=document.getElementById('boot-fallback');if(f){f.style.opacity='0';setTimeout(()=>f.remove(),600);}});
+window.__MU_BOOT_OK__=true;
 </script>
+<script>setTimeout(()=>{if(!window.__MU_BOOT_OK__){const f=document.getElementById('boot-fallback');if(f){f.innerHTML='PLEASE RELOAD · CONNECTION REQUIRED';f.style.opacity='1';}}},7000);</script>
 </body>
 </html>
