@@ -259,7 +259,10 @@ window.__MU_BOOT_OK__ = false;
 <script type="text/babel" data-presets="react">
 const {useEffect,useMemo,useState}=React;
 const {createRoot}=ReactDOM;
-const {motion,AnimatePresence}=Motion;/* ============ DATA ============ */
+const MotionAPI=window.Motion||{};
+const motion=MotionAPI.motion||new Proxy({}, {get:(_,tag)=>function MotionFallback(props){const p={...props};['initial','animate','exit','transition','whileHover','whileTap','whileFocus','whileInView','viewport','layout','layoutId','layoutScroll','drag','dragConstraints','dragElastic','dragMomentum','variants','custom','onAnimationStart','onAnimationComplete'].forEach(k=>delete p[k]);return React.createElement(tag,p,p.children);}});
+const AnimatePresence=MotionAPI.AnimatePresence||function AnimatePresenceFallback({children}){return React.createElement(React.Fragment,null,children);};
+/* ============ DATA ============ */
 const SEASONS=[
 {id:'1960s',label:'1960s',year:'1967/68',players:[
 {id:'stepney-68',name:'STEPNEY',fullName:'Alex Stepney',number:1,position:'GK',nationality:'England',birthDate:'18 September 1942',height:'183 cm',appearances:'—',goals:'—',assists:'—',trophies:'Кубок европейских чемпионов 1968',kit:'home'},
@@ -480,6 +483,7 @@ function useWikiThumb(title,size=900){
   useEffect(()=>{let live=true;setSrc(null);fetchWikiThumb(title,size).then(v=>{if(live)setSrc(v);});return()=>{live=false;};},[title,size]);
   return src;
 }
+function labelPos(position){return ({GK:'ВРАТАРЬ',DEF:'ЗАЩИТНИК',MID:'ПОЛУЗАЩИТНИК',FWD:'НАПАДАЮЩИЙ'})[position]||position||'ИГРОК';}
 function PlayerPortrait({player,src}){
   const image=src;
   return <div className="pcard-portrait">{image?<img src={image} alt={player.fullName} loading="eager"/>:<div className="pcard-portrait-fallback display">{player.name.slice(0,2)}</div>}<div className="pcard-portrait-glow"/></div>;
@@ -562,7 +566,7 @@ function Legends({onHoverSound,onClickSound}){
 const[selectedId,setSelectedId]=useState(null);
 const[hoveredId,setHoveredId]=useState(null);
 const parallax=useParallax(14);
-const selected=ЛЕГЕНДЫ.find(p=>p.id===selectedId)||null;
+const selected=LEGENDS.find(p=>p.id===selectedId)||null;
 return(<div className="locker">
 <div className="locker-bg" style={{transform:`translate3d(${parallax.x}px,${parallax.y}px,0) scale(1.06)`}}><div className="locker-bg-lights"/><div className="locker-bg-panels"/></div>
 <div className="locker-head"><div><div className="mono-label">HALL OF FAME</div><h2 className="display locker-title">ЛЕГЕНДЫ</h2><div className="mono-label locker-head-sub">ВЕЧНЫЕ КРАСНЫЕ ДЬЯВОЛЫ</div></div></div>
@@ -670,7 +674,7 @@ requestAnimationFrame(()=>{const f=document.getElementById('boot-fallback');if(f
 window.__MU_BOOT_OK__=true;
 </script>
 <script>
-window.addEventListener('error',function(e){var f=document.getElementById('boot-fallback');if(f&&!window.__MU_BOOT_OK__){f.innerHTML='ОШИБКА ЗАПУСКА · ОБНОВИ СТРАНИЦУ';f.style.opacity='1';}});
+window.addEventListener('error',function(e){var f=document.getElementById('boot-fallback');if(f&&!window.__MU_BOOT_OK__){var msg=(e&&e.message)?String(e.message):'JavaScript';f.innerHTML='ОШИБКА ЗАПУСКА · '+msg.slice(0,90);f.style.opacity='1';}});
 setTimeout(()=>{if(!window.__MU_BOOT_OK__){const f=document.getElementById('boot-fallback');if(f){f.innerHTML='ОБНОВИ СТРАНИЦУ · НЕ УДАЛОСЬ ЗАПУСТИТЬ JAVASCRIPT';f.style.opacity='1';}}},7000);
 </script>
 </body>
